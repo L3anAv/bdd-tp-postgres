@@ -1,0 +1,45 @@
+= Trabajo Práctico: Bases de Datos I − Segundo Semestre 2022
+Ávila Matías <>; Perez Giannina <gianniperez2001@gmail.com>; Prieto Lucas <lucasprieto30@gmail.com>
+v1, {docdate}. Docentes Hernan Czemerinski y Hernán Rondelli (COM-01)
+:title-page:
+:numbered:
+:source-highlighter: coderay
+:tabsize: 4
+
+== Introducción
+
+Descripción del trabajo práctico. Aquí se puede copiar textual el [ó
+parte del] enunciado del trabajo práctico de considerarse necesario.
+
+== Descripción
+
+En esta sección pueden incluirse las dificultades que tuvieron, las
+soluciones encontradas, las decisiones que se fueron tomando a lo largo
+del trabajo práctico, y las cuestiones de diseño que consideren
+importantes.
+
+También, se puede incluir una descripción general del programa—cómo
+funciona.
+
+== Implementación
+
+En esta sección se incluye el código fuente correctamente formateado—y
+comentado, si corresponde.
+
+Además, por cada fragmento de código
+relevante—i.e. función, método, procedimiento—se debe dar una
+breve descripción, decir qué hace, y especificar los parámetros que
+toma la función/método/procedimiento, junto con los valores que devuelve
+ó modifica.
+
+_No debería incluirse el código de librerías/frameworks que se
+utilicen—a no ser que sea absolutamente necesario._
+
+== Conclusiones
+
+Aquí van algunas reflexiones acerca del proceso de desarrollo del
+trabajo realizado, y de los resultados obtenidos.
+
+También se puede incluir una conclusión final de producto terminado.
+
+Pueden incluirse lecciones aprendidas durante el desarrollo del trabajo.
