@@ -1,5 +1,5 @@
 = Trabajo Práctico: Bases de Datos I − Segundo Semestre 2022
-Ávila Matías <>; Perez Giannina <gianniperez2001@gmail.com>; Prieto Lucas <lucasprieto30@gmail.com>
+Ávila Matías <leandroavmmo@gmail.com>; Perez Giannina <gianniperez2001@gmail.com>; Prieto Lucas <lucasprieto30@gmail.com>
 v1, {docdate}. Docentes Hernan Czemerinski y Hernán Rondelli (COM-01)
 :title-page:
 :numbered:
@@ -13,12 +13,14 @@ parte del] enunciado del trabajo práctico de considerarse necesario.
 
 == Descripción
 
+dificultades:
+decimal (8,2)
+timestamp - date
+
 En esta sección pueden incluirse las dificultades que tuvieron, las
 soluciones encontradas, las decisiones que se fueron tomando a lo largo
 del trabajo práctico, y las cuestiones de diseño que consideren
-importantes.
-
-También, se puede incluir una descripción general del programa—cómo
+importantes. También, se puede incluir una descripción general del programa—cómo
 funciona.
 
 == Implementación
