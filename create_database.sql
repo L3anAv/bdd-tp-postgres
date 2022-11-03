@@ -1,7 +1,6 @@
 DROP DATABASE IF EXISTS tarjetas;
 CREATE DATABASE tarjetas;
 \c tarjetas
-
 CREATE TABLE cliente (nrocliente int, nombre text, apellido text, domicilio text, telefono char(12));
 CREATE TABLE tarjeta (nrotarjeta char(16), nrocliente int, validadesde char(6), validahasta char(6), codseguridad char(4), limitecompra decimal(8,2), estado char(10));
 CREATE TABLE comercio (nrocomercio int, nombre text, domicilio text, codigopostal char(8), telefono char(12));
