@@ -1,6 +1,6 @@
 CREATE OR REPLACE FUNCTION alerta_rechazo() RETURNS TRIGGER AS $$
 BEGIN
-	INSERT INTO alerta VALUES (1, new.nrotarjeta, current_date, new.nrorechazo, 0, 'Alerta por rechazo.');
+	INSERT INTO alerta (nrotarjeta, fecha, nrorechazo, codalerta, descripcion) VALUES (NEW.nrotarjeta, CURRENT_TIMESTAMP, NEW.nrorechazo, 0, NEW.motivo);
 	RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
