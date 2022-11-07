@@ -109,10 +109,13 @@ INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguri
 INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('3464536272389793', 20, '202201', '202501', '8246', 40000, 'vigente');
 INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('1273672467364703', 20, '200506', '200806', '8246', 40000, 'anulada');
 
+-- compra (nrooperacion serial, nrotarjeta char(16), nrocomercio int, fecha timestamp, monto decimal(7,2), pagado boolean);
+-- tarjeta(nrotarjeta char(16), nrocliente int, validadesde char(6), validahasta char(6), codseguridad char(4), limitecompra decimal(8,2), estado char(10));
+
 CREATE OR REPLACE FUNCTION autorizar_compra(n_tarjeta tarjeta.nrotarjeta%type, 
                                                 cod_seg tarjeta.codseguridad%type,
                                                     n_comercio compra.nrocomercio%type,
-                                                        monto_compra compra.monto%type) return BOOLEAN as $$
+                                                        monto_compra compra.monto%type) RETURN boolean as $$
 DECLARE
     tarjeta_fila record;
     comercio_encontrado INT;
@@ -165,6 +168,6 @@ BEGIN
             VALUES (n_tarjeta, n_comercio, current_timestamp, monto_compra, false);
 
         return true;
-    
+    END IF;
 END;
 $$ LANGUAGE plpgsql;
