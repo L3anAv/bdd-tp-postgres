@@ -8,14 +8,24 @@ v1, {docdate}. Docentes Hernan Czemerinski y Hernán Rondelli (COM-01)
 
 == Introducción
 
-Descripción del trabajo práctico. Aquí se puede copiar textual el [ó
-parte del] enunciado del trabajo práctico de considerarse necesario.
+Este trabajo práctico consiste en crear una base de datos de tarjetas, en la cual se almacenarán datos de los *clientes*, sus respectivas *tarjetas* y *compras*, *comercios* en donde se realizaron las compras y los detalles de éstas. Además, estará incluida la información de los *consumos*, las *alertas*, los *rechazos* y los *cierres* de cada tarjeta. Para ello, se deberá crear una tabla correspondiente a cada una de las características solicitas e incorporar las PK’s y FK’s requeridas, que a su vez el usuario puede eliminar si así lo desea.
+
+Se deben incluir también los siguientes stored procedures y/o triggers:
+
+*Autorización de compra:* Valida o rechaza una compra, dependiendo si cumple o no los siguientes requisitos: La tarjeta debe ser válida y vigente, el número de tarjeta debe ser existente y el código de seguridad de ser correcto. Tamnién, el monto total de compras pendientes de pago más la compra a realizar no debe superar el límite de compra de la tarjeta.
+
+*Generación del resumen:* Crea y guarda todos los datos necesarios para un resumen.
+
+*Alertas a clientes:* Debe detectar y almacenar alertas para avisar a los clientes sobre posibles fraudes. Éstas consisten en comprobar que las tarjetas no superen dos compras dentro de un límite de tiempo, dependiendo del código postal en donde se realizaron dichas compras. Asimismo, suspender la tarjeta si ésta tiene dos rechazos por exceso de límite en el mismo día.
 
 == Descripción
 
 dificultades:
 decimal (8,2)
 timestamp - date
+
+Utilizamos la función substring() de SQL para poder determinar el valor de terminación dentro de la función generar_resumen().
+En varios fields decidimos cambiar su tipo de int a serial, esto para poder incrementar su valor automáticamente.
 
 En esta sección pueden incluirse las dificultades que tuvieron, las
 soluciones encontradas, las decisiones que se fueron tomando a lo largo
