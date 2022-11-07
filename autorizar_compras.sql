@@ -4,7 +4,7 @@
 CREATE OR REPLACE FUNCTION autorizar_compra(n_tarjeta tarjeta.nrotarjeta%type, 
                                                 cod_seg tarjeta.codseguridad%type,
                                                     n_comercio compra.nrocomercio%type,
-                                                        monto_compra compra.monto%type) RETURN boolean as $$
+                                                        monto_compra compra.monto%type) RETURNS boolean as $$
 DECLARE
     tarjeta_fila record;
     comercio_encontrado INT;
@@ -38,14 +38,14 @@ BEGIN
     
     --Control de tarjeta que no este suspendida
     ELSIF tarjeta_fila.estado == 'suspendida' then
-        INSERT INTO rechazo rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo)
+        INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo)
             VALUES (n_tarjeta, n_comercio, current_timestamp, monto_compra, 'La Tarjeta se encuentra suspendida.');
     
         return false;
 
     --Control de que la tarjeta no este vencida.
     ELSIF TO_DATE(fecha_de_vencimiento,'YYYYMM') == TO_DATE(fecha_actual,'YYYYMM') then
-        INSERT INTO rechazo rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo)
+        INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo)
             VALUES (n_tarjeta, n_comercio, current_timestamp, monto_compra, 'Plazo de vigencia expirado.');
     
         return false;
