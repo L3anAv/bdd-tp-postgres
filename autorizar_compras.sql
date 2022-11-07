@@ -9,14 +9,19 @@ DECLARE
     tarjeta_fila record;
     comercio_encontrado INT;
     fecha_de_vencimiento TEXT;
+    fecha_actual TEXT;
 BEGIN
 
     --calcular las compras pendientes
     -- Seleccion de fila completa de tarjeta
     SELECT * INTO tarjeta_fila FROM tarjeta t WHERE n_tarjeta = t.nrotarjeta;
-    --seleccion de fecha tope de validez
-    SELECT validadesde INTO fecha_de_vencimiento FROM tarjeta_fila WHERE n_tarjeta = tarjeta_fila.nrotarjeta;
     
+    -- inserccion de la fecha hasta cuando es valida la tarjeta
+    SELECT CAST(validadesde AS TEXT) INTO fecha_de_vencimiento FROM tarjeta_fila WHERE n_tarjeta = tarjeta_fila.nrotarjeta;
+
+    --asignacion de fecha actual a variable como texto
+    fecha_actual := CAST(CURRENT_DATE as TEXT);
+
     --Control de la tarjeta pasada por parametro
     IF NOT found then
         INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo) 
@@ -39,7 +44,7 @@ BEGIN
         return false;
 
     --Control de que la tarjeta no este vencida.
-    ELSIF fecha_de_vencimiento == CURRENT_DATE then
+    ELSIF TO_DATE(fecha_de_vencimiento,'YYYYMM') == TO_DATE(fecha_actual,'YYYYMM') then
         INSERT INTO rechazo rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo)
             VALUES (n_tarjeta, n_comercio, current_timestamp, monto_compra, 'Plazo de vigencia expirado.');
     
@@ -52,5 +57,6 @@ BEGIN
             VALUES (n_tarjeta, n_comercio, current_timestamp, monto_compra, false);
 
         return true;
+    
 END;
 $$ LANGUAGE plpgsql;
