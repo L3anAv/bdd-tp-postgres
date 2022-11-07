@@ -4,7 +4,7 @@
 CREATE OR REPLACE FUNCTION autorizar_compra(n_tarjeta tarjeta.nrotarjeta%type, 
                                                 cod_seg tarjeta.codseguridad%type,
                                                     n_comercio compra.nrocomercio%type,
-                                                        monto_compra compra.monto%type) return BOOLEAN as $$
+                                                        monto_compra compra.monto%type) RETURN BOOLEAN as $$
 DECLARE
     tarjeta_fila record;
     comercio_encontrado INT;
@@ -57,6 +57,6 @@ BEGIN
             VALUES (n_tarjeta, n_comercio, current_timestamp, monto_compra, false);
 
         return true;
-    
+    END IF;
 END;
 $$ LANGUAGE plpgsql;
