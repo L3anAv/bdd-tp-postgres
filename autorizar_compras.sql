@@ -4,7 +4,7 @@
 CREATE OR REPLACE FUNCTION autorizar_compra(n_tarjeta tarjeta.nrotarjeta%type, 
                                                 cod_seg tarjeta.codseguridad%type,
                                                     n_comercio compra.nrocomercio%type,
-                                                        monto_compra compra.monto%type) RETURN BOOLEAN as $$
+                                                        monto_compra compra.monto%type) RETURN boolean as $$
 DECLARE
     tarjeta_fila record;
     comercio_encontrado INT;
