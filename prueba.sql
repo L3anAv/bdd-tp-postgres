@@ -112,15 +112,16 @@ INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguri
 -- compra (nrooperacion serial, nrotarjeta char(16), nrocomercio int, fecha timestamp, monto decimal(7,2), pagado boolean);
 -- tarjeta(nrotarjeta char(16), nrocliente int, validadesde char(6), validahasta char(6), codseguridad char(4), limitecompra decimal(8,2), estado char(10));
 
-CREATE OR REPLACE FUNCTION autorizar_compra(n_tarjeta INT, /*tarjeta.nrotarjeta%type*/, 
-                                                cod_seg INT, /*tarjeta.codseguridad%type*/,
-                                                    n_comercio INT, /*compra.nrocomercio%type*/,
-                                                        monto_compra INT /*compra.monto%type*/) RETURNS boolean as $$
+CREATE OR REPLACE FUNCTION autorizar_compra(n_tarjeta tarjeta.nrotarjeta%type,
+                                                cod_seg tarjeta.codseguridad%type,
+                                                    n_comercio compra.nrocomercio%type,
+                                                        monto_compra compra.monto%type) RETURNS boolean as $$
 DECLARE
+    fecha_actual DATE;
     tarjeta_fila record;
+    fecha_vencimiento DATE;
     comercio_encontrado INT;
-    fecha_de_vencimiento TEXT;
-    fecha_actual TEXT;
+    fecha_de_vencimiento_text TEXT;   
 BEGIN
 
     --calcular las compras pendientes
@@ -128,11 +129,12 @@ BEGIN
     SELECT * INTO tarjeta_fila FROM tarjeta t WHERE n_tarjeta = t.nrotarjeta;
     
     -- inserccion de la fecha hasta cuando es valida la tarjeta
-    SELECT CAST(validadesde AS TEXT) INTO fecha_de_vencimiento FROM tarjeta_fila WHERE n_tarjeta = tarjeta_fila.nrotarjeta;
+    SELECT CAST(validadesde AS TEXT) INTO fecha_de_vencimiento_text FROM tarjeta t WHERE n_tarjeta = t.nrotarjeta;
 
     --asignacion de fecha actual a variable como texto
-    fecha_actual := CAST(CURRENT_DATE as TEXT);
-
+    fecha_actual := CURRENT_DATE;
+	fecha_vencimiento := TO_DATE(fecha_de_vencimiento_text, 'YYYYMM');
+	
     --Control de la tarjeta pasada por parametro
     IF NOT found then
         INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo) 
@@ -148,7 +150,7 @@ BEGIN
         return false;
     
     --Control de que la tarjeta no este vencida.
-    ELSIF TO_DATE(fecha_de_vencimiento,'YYYYMM') == TO_DATE(fecha_actual,'YYYYMM') then
+    ELSIF fecha_actual > fecha_vencimiento then
         INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo)
             VALUES (n_tarjeta, n_comercio, current_timestamp, monto_compra, 'Plazo de vigencia expirado.');
     
