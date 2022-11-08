@@ -109,7 +109,7 @@ INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguri
 INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('3464536272389793', 20, '202201', '202501', '8246', 40000, 'vigente');
 INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('1273672467364703', 20, '200506', '200806', '8246', 40000, 'anulada');
 
--- INSERTS COMPRAS PARA PRUEBA DE IF
+-- INSERTS COMPRAS PARA PRUEBA DE FUNCION autorizar_compra
 INSERT INTO compra (nrotarjeta, nrocomercio, fecha, monto, pagado) VALUES ('4982394782623736', '1', CURRENT_TIMESTAMP, 20000.0, false);
 INSERT INTO compra (nrotarjeta, nrocomercio, fecha, monto, pagado) VALUES ('4982394782623736', '2', CURRENT_TIMESTAMP, 20000.0, false);
 

@@ -16,9 +16,31 @@ const dbInfo string = "user=postgres password=123 host=localhost dbname=tarjetas
 
 var db *sql.DB
 var err error
+var opcion int = 0;
+var Menu string;
 
 func main() {
-		fmt.Print("Crear y cargar datos (hardcodeo)\n")
+
+		Menu := 
+		`
+		\n\x1b[38;5;81m% Bienvenido % Opciones de acciones para realizar: \033[0m\n
+		\n
+		[1]. Crear Base de datos de Tarjetas. \n
+		[2]. Crear Tablas. \n
+		[3]. Crear PK's y FK's. \n
+		[4]. Borrar PK's y FK's. \n
+		[5]. Insertar datos en tablas. \n
+		[6]. Crear y cargar funciones. \n
+		[7]. Autorizar compra. \n
+		[8]. Generar Resumenes. \n
+		[9]. \x1b[38;5;9mSALIR.\033[0m
+		\n
+		`
+
+		fmt.Print(Menu)
+		fmt.Print(`\n\x1b[38;5;0mIngrese el numero de opcion a realizar: \033[0m\`)
+		fmt.Scanf("%i", &opcion)
+		fmt.Print(`\n\x1b[38;5;Operacion solicitada: \033[0m\`, opcion)
 }
 
 func createDatabase() {
