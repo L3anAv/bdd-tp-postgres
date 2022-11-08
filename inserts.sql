@@ -23,51 +23,51 @@ INSERT INTO cliente (nombre, apellido, domicilio, telefono) VALUES ('Paulo', 'Go
 
 -- Comercios
 
-INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Ferreteria El Cosito', 'Cervantes 565','C1425EID','541100000000');
-INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Carniceria La Vaca Feliz', 'Gral. Guemes 897','B8225EID','541199999999');
-INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Bar El Obrero', 'Donado 65','E6325EID','541100000000');
-INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Merceria Doña Tita', 'Pres. Juan Domingo Perón 4739','F3325EID','541100000000');
-INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Farmacia Balcarce', 'Paraná 3822','F6721EID','541100000000');
-INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Supermecado Los 3 Hermanos', 'Antonio Saenz 2041','B6721EID','541100000000');
-INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Hotel San Carlos', 'Av. Ing Agustín Rocca 249','G8902EID','541100000000');
-INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Dietetica El Obeso', 'Conquista Del Desierto 230','H9012EID','541100000000');
-INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Kiosco La Esquina', 'Dr. Salvador Sallares 63','F5462EID','541100000000');
-INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Verduleria Don Pedro', 'Bernardo De Monteagudo 3351','A7810EID','541100000000');
-INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Panaderia La Ponderosa', 'Brig. Gral. Juan M. De Rosas 14446','G2091EID','541100000000');
-INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Veterinaria Cura Bicho', 'Av. Eva Duarte de Peron 1474','H5674EID','541100000000');
-INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Tienda de Ropa La Gastadera', 'Hipólito Yrigoyen 1807','C4512EID','541100000000');
-INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Vidrieria El Reflejo', 'Av Luro 5975','F3241EID','541100000000');
-INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Gomeria La Rueda Feliz', '9 De Julio 1185','E4312EID','541100000000');
-INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Mecanica Austral', 'Calle 8 788','G3212EID','541100000000');
-INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Lavadero Blanca', 'Calle 12 esq. 58 Nº 1249','C6786EID','541100000000');
-INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Colchones Dulce Sueños', 'Sarmiento 2685','C2341EID','541100000000');
-INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Salon de Fiestas Wonka', 'Catamarca 1865','F0443EID','541100000000');
-INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Restaurant Ratatouille', 'Bartolomé Mitre 2642','G3245EID','541100000000');
+INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Ferreteria El Cosito', 'Cervantes 565','C1425EID','541165849035');
+INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Carniceria La Vaca Feliz', 'Gral. Guemes 897','C1425EID','541199999999');
+INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Bar El Obrero', 'Donado 65','E6325EID','541174392057');
+INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Merceria Doña Tita', 'Pres. Juan Domingo Perón 4739','F3325EID','541129495473');
+INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Farmacia Balcarce', 'Paraná 3822','F6721EID','541139572659');
+INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Supermecado Los 3 Hermanos', 'Antonio Saenz 2041','B6721EID','541148573927');
+INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Hotel San Carlos', 'Av. Ing Agustín Rocca 249','G8902EID','541160382046');
+INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Dietetica El Obeso', 'Conquista Del Desierto 230','H9012EID','541140682540');
+INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Kiosco La Esquina', 'Dr. Salvador Sallares 63','F5462EID','541168392028');
+INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Verduleria Don Pedro', 'Bernardo De Monteagudo 3351','A7810EID','541147592038');
+INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Panaderia La Ponderosa', 'Brig. Gral. Juan M. De Rosas 14446','G2091EID','541100374993');
+INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Veterinaria Cura Bicho', 'Av. Eva Duarte de Peron 1474','H5674EID','541100000384');
+INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Tienda de Ropa La Gastadera', 'Hipólito Yrigoyen 1807','C4512EID','541103058239');
+INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Vidrieria El Reflejo', 'Av Luro 5975','F3241EID','541100000037');
+INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Gomeria La Rueda Feliz', '9 De Julio 1185','E4312EID','541100000070');
+INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Mecanica Austral', 'Calle 8 788','G3212EID','541100000800');
+INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Lavadero Blanca', 'Calle 12 esq. 58 Nº 1249','C6786EID','541100000500');
+INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Colchones Dulce Sueños', 'Sarmiento 2685','C2341EID','541100000900');
+INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Salon de Fiestas Wonka', 'Catamarca 1865','F0443EID','541100001000');
+INSERT INTO comercio (nombre, domicilio, codigopostal, telefono) VALUES ('Restaurant Ratatouille', 'Bartolomé Mitre 2642','G3245EID','541100009843');
 
 -- Tarjetas
 
-INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('9320584378172604', 1, '201106', '201406', '8246', 40000, 'anulada');
-INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('4982394782623736', 2, '202008', '202308', '8246', 40000, 'vigente');
-INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('5129043812284623', 3, '202203', '202503', '8246', 40000, 'vigente');
-INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('1294382965767449', 4, '201912', '202212', '8246', 40000, 'suspendida');
-INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('9293437257327169', 5, '202109', '202409', '8246', 40000, 'anulada');
-INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('5827624652643290', 6, '202211', '202511', '8246', 40000, 'vigente');
-INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('3928217404085943', 7, '202212', '202512', '8246', 40000, 'vigente');
-INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('1982747364536562', 8, '201301', '201601', '8246', 40000, 'anulada');
-INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('9012348282748326', 9, '202010', '202310', '8246', 40000, 'vigente');
-INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('8274236578326572', 10, '201911', '202211', '8246', 40000, 'suspendida');
-INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('8324732653627823', 11, '202204', '202504', '8246', 40000, 'vigente');
-INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('7632462483439834', 12, '201212', '201512', '8246', 40000, 'anulada');
-INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('7216435365643723', 13, '200112', '200412', '8246', 40000, 'anulada');
-INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('3624376458982394', 14, '202007', '202307', '8246', 40000, 'suspendida');
-INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('6347467826428439', 15, '202006', '202306', '8246', 40000, 'vigente');
-INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('5923892848377829', 16, '201003', '201303', '8246', 40000, 'suspendida');
-INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('3784736427463790', 17, '202003', '202303', '8246', 40000, 'vigente');
-INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('3209340294208483', 18, '202108', '202408', '8246', 40000, 'suspendida');
-INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('2743472943783934', 19, '202109', '202409', '8246', 40000, 'vigente');
-INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('8437284736756736', 19, '200202', '200502', '8246', 40000, 'anulada');
-INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('3464536272389793', 20, '202201', '202501', '8246', 40000, 'vigente');
-INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('1273672467364703', 20, '200506', '200806', '8246', 40000, 'anulada');
+INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('9320584378172604', 1, '201106', '201406', '906', 20000, 'anulada');
+INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('4982394782623736', 2, '202008', '202308', '2958', 25000, 'vigente');
+INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('5129043812284623', 3, '202203', '202503', '753', 30800, 'vigente');
+INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('1294382965767449', 4, '201912', '202212', '2364', 10500, 'suspendida');
+INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('9293437257327169', 5, '202109', '202409', '937', 67000, 'anulada');
+INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('5827624652643290', 6, '202211', '202511', '8246', 8000, 'vigente');
+INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('3928217404085943', 7, '202212', '202512', '1485', 9000, 'vigente');
+INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('1982747364536562', 8, '201301', '201601', '842', 70500, 'anulada');
+INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('9012348282748326', 9, '202010', '202310', '520', 21000, 'vigente');
+INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('8274236578326572', 10, '201911', '202211', '7856', 14000, 'suspendida');
+INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('8324732653627823', 11, '202204', '202504', '5848', 34500, 'vigente');
+INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('7632462483439834', 12, '201212', '201512', '530', 48600, 'anulada');
+INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('7216435365643723', 13, '200112', '200412', '740', 98000, 'anulada');
+INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('3624376458982394', 14, '202007', '202307', '2485', 17900, 'suspendida');
+INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('6347467826428439', 15, '202006', '202306', '773', 15000, 'vigente');
+INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('5923892848377829', 16, '201003', '201303', '4575', 40000, 'suspendida');
+INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('3784736427463790', 17, '202003', '202303', '2397', 38000, 'vigente');
+INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('3209340294208483', 18, '202108', '202408', '608', 16500, 'suspendida');
+INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('2743472943783934', 19, '202109', '202409', '453', 55500, 'vigente');
+INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('8437284736756736', 19, '200202', '200502', '192', 66500, 'anulada');
+INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('3464536272389793', 20, '202201', '202501', '1256', 13800, 'vigente');
+INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('1273672467364703', 20, '200506', '200806', '9243', 98000, 'anulada');
 
 -- Cierres
 
@@ -210,3 +210,27 @@ INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) 
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 10, 9, '2022-10-01', '2022-10-31', '2022-11-19');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 11, 9, '2022-11-01', '2022-11-30', '2022-12-19');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 12, 9, '2022-12-01', '2022-12-31', '2023-01-19');
+
+-- CONSUMOS
+
+-- Compra correcta
+INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('5827624652643290','8246', 3, 3500);
+-- Tarjeta inválida
+INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('2930489589375756','235', 7, 10000);
+-- Tarjeta anulada
+INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('9320584378172604','906', 1, 7000);
+-- Tarjeta suspendida
+INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('1294382965767449','2364', 6, 3500);
+-- Codseguridad incorrecto
+INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('6347467826428439','546', 2, 960);
+-- Límite de compra superado
+INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('3464536272389793','1256', 1, 25000);
+-- Dos compras en un lapso menor de un minuto en comercios distintos ubicados en el mismo código postal.
+INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('3928217404085943','1485', 1, 5000);
+INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('3928217404085943','1485', 2, 7000);
+-- Dos compras en un lapso menor de cinco minutos en comercios con diferentes códigos postales.
+INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('9012348282748326','520', 3, 10000);
+INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('9012348282748326','520', 4, 9000);
+-- Dos rechazos por exceso de límite en el mismo día.
+INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('3784736427463790','2397', 9, 50000);
+INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('3784736427463790','2397', 9, 80000);
