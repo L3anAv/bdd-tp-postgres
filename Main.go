@@ -21,26 +21,25 @@ var Menu string;
 
 func main() {
 
-		Menu := 
-		`
-		\n\x1b[38;5;81m% Bienvenido % Opciones de acciones para realizar: \033[0m\n
-		\n
-		[1]. Crear Base de datos de Tarjetas. \n
-		[2]. Crear Tablas. \n
-		[3]. Crear PK's y FK's. \n
-		[4]. Borrar PK's y FK's. \n
-		[5]. Insertar datos en tablas. \n
-		[6]. Crear y cargar funciones. \n
-		[7]. Autorizar compra. \n
-		[8]. Generar Resumenes. \n
-		[9]. \x1b[38;5;9mSALIR.\033[0m
-		\n
-		`
-
-		fmt.Print(Menu)
-		fmt.Print(`\n\x1b[38;5;0mIngrese el numero de opcion a realizar: \033[0m\`)
-		fmt.Scanf("%i", &opcion)
-		fmt.Print(`\n\x1b[38;5;Operacion solicitada: \033[0m\`, opcion)
+Menu := 
+`% Bienvenido % Opciones de acciones para realizar:
+		
+	[1]. Crear Base de datos de Tarjetas. 
+	[2]. Crear Tablas. 
+	[3]. Crear PK's y FK's. 
+	[4]. Borrar PK's y FK's. 
+	[5]. Insertar datos en tablas. 
+	[6]. Crear y cargar funciones. 
+	[7]. Autorizar compra. 
+	[8]. Generar Resumenes. 
+	[9]. SALIR.
+		
+`
+	fmt.Print(Menu)
+	fmt.Print(`Ingrese el numero de opcion a realizar: `)
+	fmt.Scanf("%d", &opcion)
+	fmt.Print(`Operacion solicitada: `, opcion)
+	fmt.Print("\n")
 }
 
 func createDatabase() {

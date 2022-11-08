@@ -24,14 +24,18 @@ dificultades:
 decimal (8,2)
 timestamp - date
 
-Utilizamos la función substring() de SQL para poder determinar el valor de terminación dentro de la función generar_resumen().
+- Utilizamos la función substring() de SQL para poder determinar el valor de terminación dentro de la función generar_resumen().
 En varios fields decidimos cambiar su tipo de int a serial, esto para poder incrementar su valor automáticamente.
 
-En esta sección pueden incluirse las dificultades que tuvieron, las
+- En esta sección pueden incluirse las dificultades que tuvieron, las
 soluciones encontradas, las decisiones que se fueron tomando a lo largo
 del trabajo práctico, y las cuestiones de diseño que consideren
 importantes. También, se puede incluir una descripción general del programa—cómo
 funciona.
+
+- Cuando pruebo con una tarjeta no válida falla porque quiere insertar en rechazo
+pero rechazo tiene una fk con nrotarjeta, y si no existe en la tabla tarjeta 
+no lo permite.
 
 == Implementación
 
