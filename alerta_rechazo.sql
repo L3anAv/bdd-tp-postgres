@@ -1,6 +1,18 @@
 
 CREATE OR REPLACE FUNCTION alerta_rechazo() RETURNS TRIGGER AS $$
 BEGIN
+	
+	PERFORM * FROM rechazo r WHERE r.nrotarjeta = NEW.nrotarjeta
+									AND r.nrorechazo != NEW.nrorechazo
+									AND EXTRACT(DAY FROM r.fecha) = EXTRACT(DAY FROM new.fecha)
+									AND EXTRACT(MONTH FROM r.fecha) = EXTRACT(MONTH FROM new.fecha)
+									AND EXTRACT(YEAR FROM r.fecha) = EXTRACT(YEAR FROM new.fecha)
+									AND r.motivo = 'Supera límite de tarjeta'
+									AND new.motivo = 'Supera límite de tarjeta';
+	IF FOUND THEN
+		UPDATE tarjeta SET estado = 'suspendida' WHERE nrotarjeta = new.nrotarjeta;
+		INSERT INTO alerta (nrotarjeta, fecha, nrorechazo, codalerta, descripcion) VALUES (new.nrotarjeta, CURRENT_TIMESTAMP, new.nrorechazo, 32, 'Tarjeta suspendida por compras excedidas del límite');
+	END IF;
 	INSERT INTO alerta (nrotarjeta, fecha, nrorechazo, codalerta, descripcion) VALUES (NEW.nrotarjeta, CURRENT_TIMESTAMP, NEW.nrorechazo, 0, NEW.motivo);
 	RETURN NEW;
 END;
@@ -31,7 +43,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION alerta_compra_1minuto() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION alerta_compras() RETURNS TRIGGER AS $$
 DECLARE
 	ultima_compra record;
 	codigo_postal_ultima_compra comercio.codigopostal%TYPE;
@@ -46,21 +58,23 @@ BEGIN
 	mismo_dia := es_mismo_dia(NEW.fecha, ultima_compra.fecha);
 	SELECT EXTRACT INTO diferencia_minutos (MINUTES FROM (NEW.fecha - ultima_compra.fecha));
 	
-	if NEW.nrocomercio != ultima_compra.nrocomercio AND codigo_postal_compra_actual = codigo_postal_ultima_compra AND mismo_dia = true AND diferencia_minutos < 1 THEN
+	IF NEW.nrocomercio != ultima_compra.nrocomercio AND codigo_postal_compra_actual = codigo_postal_ultima_compra AND mismo_dia = true AND diferencia_minutos < 1 THEN
 		INSERT INTO alerta (nrotarjeta, fecha, codalerta, descripcion) VALUES (NEW.nrotarjeta, CURRENT_TIMESTAMP, 1, 'Se realizaron dos compras en el mismo minuto en tiendas distintas');
+	END IF;
+	
+	IF codigo_postal_compra_actual != codigo_postal_ultima_compra AND mismo_dia = true AND diferencia_minutos < 5 THEN
+		INSERT INTO alerta (nrotarjeta, fecha, codalerta, descripcion) VALUES (NEW.nrotarjeta, CURRENT_TIMESTAMP, 5, 'Se realizaron dos compras en 5 minutos en localidades distintas');
 	END IF;
 	RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
-
-
 
 CREATE OR REPLACE TRIGGER alerta_rechazo_trigger
 AFTER INSERT ON rechazo
 FOR EACH ROW
 EXECUTE PROCEDURE alerta_rechazo();
 
-CREATE OR REPLACE TRIGGER alerta_compra_1minuto
+CREATE OR REPLACE TRIGGER alerta_compras_trigger
 BEFORE INSERT ON compra
 FOR EACH ROW
-EXECUTE PROCEDURE alerta_compra_1minuto();
+EXECUTE PROCEDURE alerta_compras();
