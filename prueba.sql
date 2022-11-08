@@ -112,10 +112,10 @@ INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguri
 -- compra (nrooperacion serial, nrotarjeta char(16), nrocomercio int, fecha timestamp, monto decimal(7,2), pagado boolean);
 -- tarjeta(nrotarjeta char(16), nrocliente int, validadesde char(6), validahasta char(6), codseguridad char(4), limitecompra decimal(8,2), estado char(10));
 
-CREATE OR REPLACE FUNCTION autorizar_compra(n_tarjeta tarjeta.nrotarjeta%type, 
-                                                cod_seg tarjeta.codseguridad%type,
-                                                    n_comercio compra.nrocomercio%type,
-                                                        monto_compra compra.monto%type) RETURNS boolean as $$
+CREATE OR REPLACE FUNCTION autorizar_compra(n_tarjeta INT, /*tarjeta.nrotarjeta%type*/, 
+                                                cod_seg INT, /*tarjeta.codseguridad%type*/,
+                                                    n_comercio INT, /*compra.nrocomercio%type*/,
+                                                        monto_compra INT /*compra.monto%type*/) RETURNS boolean as $$
 DECLARE
     tarjeta_fila record;
     comercio_encontrado INT;
@@ -147,17 +147,17 @@ BEGIN
         
         return false;
     
-    --Control de tarjeta que no este suspendida
-    ELSIF tarjeta_fila.estado == 'suspendida' then
-        INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo)
-            VALUES (n_tarjeta, n_comercio, current_timestamp, monto_compra, 'La Tarjeta se encuentra suspendida.');
-    
-        return false;
-
     --Control de que la tarjeta no este vencida.
     ELSIF TO_DATE(fecha_de_vencimiento,'YYYYMM') == TO_DATE(fecha_actual,'YYYYMM') then
         INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo)
             VALUES (n_tarjeta, n_comercio, current_timestamp, monto_compra, 'Plazo de vigencia expirado.');
+    
+        return false;
+
+    --Control de tarjeta que no este suspendida
+    ELSIF tarjeta_fila.estado == 'suspendida' then
+        INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo)
+            VALUES (n_tarjeta, n_comercio, current_timestamp, monto_compra, 'La Tarjeta se encuentra suspendida.');
     
         return false;
 
