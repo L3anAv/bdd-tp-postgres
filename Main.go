@@ -46,23 +46,35 @@ Menu :=
 	
 	switch opcion{
 			case 1:
-				fmt.Print("Crear Base de datos de Tarjetas. \n")
+				fmt.Print("Creando Base de datos... \n")
 				createDatabase()
-				fmt.Print("Base de datos creada. \n")
+				fmt.Print("Base de datos creada! \n")
 			case 2:
-				fmt.Print("Crear Tablas. \n")
+				fmt.Print("Creando Tablas. \n")
+				createTables()
+				fmt.Print("Tablas de base de datos creada! \n")
 			case 3:
-				fmt.Print("Crear PK's y FK's. \n")
+				fmt.Print("Creando PK's y FK's. \n")
+				createPksAndFks()
+				fmt.Print("PK's y FK's de tablas creadas! \n")
 			case 4:
-				fmt.Print("Borrar PK's y FK's. \n")
+				fmt.Print("Borrando PK's y FK's. \n")
+				// Funcion de borrar PK's y FK's.
+				fmt.Print("PK's y FK's eliminadas! \n")
 			case 5:
-				fmt.Print("Insertar datos en tablas. \n")
+				fmt.Print("Insertando datos en tablas. \n")
+				insertValues()
+				fmt.Print("Datos insertados en las tablas! \n")
 			case 6:
 				fmt.Print("Crear y cargar funciones. \n")
+				// Funcion para crear funciones.
+				fmt.Print("Funciones Creadas! \n")
 			case 7:
 				fmt.Print("Autorizar compra. \n")
+				// Funcion Autoriza compra.
 			case 8:
 				fmt.Print("Generar Resumenes. \n")
+				// Funcion para generar Resumenes.
 			case 9:
 				os.Exit(1)
 	}
