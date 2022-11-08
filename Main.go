@@ -2,7 +2,10 @@ package main
 
 import (
 	"database/sql"
+	_ "github.com/lib/pq"
 	"fmt"
+	"os"
+	"log"
 )
 
 type consumo struct {
@@ -36,10 +39,33 @@ Menu :=
 		
 `
 	fmt.Print(Menu)
-	fmt.Print(`Ingrese el numero de opcion a realizar: `)
+	fmt.Print("Ingrese el numero de opcion a realizar: ")
 	fmt.Scanf("%d", &opcion)
-	fmt.Print(`Operacion solicitada: `, opcion)
+	fmt.Print("Operacion solicitada: ", opcion)
 	fmt.Print("\n")
+	
+	switch opcion{
+			case 1:
+				fmt.Print("Crear Base de datos de Tarjetas. \n")
+				createDatabase()
+				fmt.Print("Base de datos creada. \n")
+			case 2:
+				fmt.Print("Crear Tablas. \n")
+			case 3:
+				fmt.Print("Crear PK's y FK's. \n")
+			case 4:
+				fmt.Print("Borrar PK's y FK's. \n")
+			case 5:
+				fmt.Print("Insertar datos en tablas. \n")
+			case 6:
+				fmt.Print("Crear y cargar funciones. \n")
+			case 7:
+				fmt.Print("Autorizar compra. \n")
+			case 8:
+				fmt.Print("Generar Resumenes. \n")
+			case 9:
+				os.Exit(1)
+	}
 }
 
 func createDatabase() {
