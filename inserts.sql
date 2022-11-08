@@ -73,7 +73,7 @@ INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguri
 
 -- Terminación tarjeta: 0
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 1, 0, '2022-01-01', '2022-01-31', '2022-02-10');
-INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 2, 0, '2022-02-01', '2022-02-29', '2022-03-10');
+INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 2, 0, '2022-02-01', '2022-02-28', '2022-03-10');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 3, 0, '2022-03-01', '2022-03-31', '2022-04-10');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 4, 0, '2022-04-01', '2022-04-30', '2022-05-10');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 5, 0, '2022-05-01', '2022-05-31', '2022-06-10');
@@ -87,7 +87,7 @@ INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) 
 
 -- Terminación tarjeta: 1
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 1, 1, '2022-01-01', '2022-01-31', '2022-02-11');
-INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 2, 1, '2022-02-01', '2022-02-29', '2022-03-11');
+INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 2, 1, '2022-02-01', '2022-02-28', '2022-03-11');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 3, 1, '2022-03-01', '2022-03-31', '2022-04-11');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 4, 1, '2022-04-01', '2022-04-30', '2022-05-11');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 5, 1, '2022-05-01', '2022-05-31', '2022-06-11');
@@ -101,7 +101,7 @@ INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) 
 
 -- Terminación tarjeta: 2
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 1, 2, '2022-01-01', '2022-01-31', '2022-02-12');
-INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 2, 2, '2022-02-01', '2022-02-29', '2022-03-12');
+INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 2, 2, '2022-02-01', '2022-02-28', '2022-03-12');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 3, 2, '2022-03-01', '2022-03-31', '2022-04-12');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 4, 2, '2022-04-01', '2022-04-30', '2022-05-12');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 5, 2, '2022-05-01', '2022-05-31', '2022-06-12');
@@ -115,7 +115,7 @@ INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) 
 
 -- Terminación tarjeta: 3
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 1, 3, '2022-01-01', '2022-01-31', '2022-02-13');
-INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 2, 3, '2022-02-01', '2022-02-29', '2022-03-13');
+INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 2, 3, '2022-02-01', '2022-02-28', '2022-03-13');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 3, 3, '2022-03-01', '2022-03-31', '2022-04-13');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 4, 3, '2022-04-01', '2022-04-30', '2022-05-13');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 5, 3, '2022-05-01', '2022-05-31', '2022-06-13');
@@ -129,7 +129,7 @@ INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) 
 
 -- Terminación tarjeta: 4
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 1, 4, '2022-01-01', '2022-01-31', '2022-02-14');
-INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 2, 4, '2022-02-01', '2022-02-29', '2022-03-14');
+INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 2, 4, '2022-02-01', '2022-02-28', '2022-03-14');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 3, 4, '2022-03-01', '2022-03-31', '2022-04-14');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 4, 4, '2022-04-01', '2022-04-30', '2022-05-14');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 5, 4, '2022-05-01', '2022-05-31', '2022-06-14');
@@ -143,7 +143,7 @@ INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) 
 
 -- Terminación tarjeta: 5
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 1, 5, '2022-01-01', '2022-01-31', '2022-02-15');
-INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 2, 5, '2022-02-01', '2022-02-29', '2022-03-15');
+INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 2, 5, '2022-02-01', '2022-02-28', '2022-03-15');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 3, 5, '2022-03-01', '2022-03-31', '2022-04-15');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 4, 5, '2022-04-01', '2022-04-30', '2022-05-15');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 5, 5, '2022-05-01', '2022-05-31', '2022-06-15');
@@ -157,7 +157,7 @@ INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) 
 
 -- Terminación tarjeta: 6
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 1, 6, '2022-01-01', '2022-01-31', '2022-02-16');
-INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 2, 6, '2022-02-01', '2022-02-29', '2022-03-16');
+INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 2, 6, '2022-02-01', '2022-02-28', '2022-03-16');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 3, 6, '2022-03-01', '2022-03-31', '2022-04-16');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 4, 6, '2022-04-01', '2022-04-30', '2022-05-16');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 5, 6, '2022-05-01', '2022-05-31', '2022-06-16');
@@ -171,7 +171,7 @@ INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) 
 
 -- Terminación tarjeta: 7
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 1, 7, '2022-01-01', '2022-01-31', '2022-02-17');
-INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 2, 7, '2022-02-01', '2022-02-29', '2022-03-17');
+INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 2, 7, '2022-02-01', '2022-02-28', '2022-03-17');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 3, 7, '2022-03-01', '2022-03-31', '2022-04-17');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 4, 7, '2022-04-01', '2022-04-30', '2022-05-17');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 5, 7, '2022-05-01', '2022-05-31', '2022-06-17');
@@ -185,7 +185,7 @@ INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) 
 
 -- Terminación tarjeta: 8
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 1, 8, '2022-01-01', '2022-01-31', '2022-02-18');
-INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 2, 8, '2022-02-01', '2022-02-29', '2022-03-18');
+INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 2, 8, '2022-02-01', '2022-02-28', '2022-03-18');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 3, 8, '2022-03-01', '2022-03-31', '2022-04-18');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 4, 8, '2022-04-01', '2022-04-30', '2022-05-18');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 5, 8, '2022-05-01', '2022-05-31', '2022-06-18');
@@ -199,7 +199,7 @@ INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) 
 
 -- Terminación tarjeta: 9
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 1, 9, '2022-01-01', '2022-01-31', '2022-02-19');
-INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 2, 9, '2022-02-01', '2022-02-29', '2022-03-19');
+INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 2, 9, '2022-02-01', '2022-02-28', '2022-03-19');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 3, 9, '2022-03-01', '2022-03-31', '2022-04-19');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 4, 9, '2022-04-01', '2022-04-30', '2022-05-19');
 INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 5, 9, '2022-05-01', '2022-05-31', '2022-06-19');
@@ -216,7 +216,7 @@ INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) 
 -- Compra correcta
 INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('5827624652643290','8246', 3, 3500);
 -- Tarjeta inválida
-INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('2930489589375756','235', 7, 10000);
+INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('6347467826428439','235', 7, 10000);
 -- Tarjeta anulada
 INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('9320584378172604','906', 1, 7000);
 -- Tarjeta suspendida

@@ -9,7 +9,6 @@ ALTER TABLE cierre ADD CONSTRAINT cierre_pk PRIMARY KEY (año, mes, terminacion)
 ALTER TABLE cabecera ADD CONSTRAINT cabecera_pk PRIMARY KEY (nroresumen);
 ALTER TABLE detalle ADD CONSTRAINT detalle_pk PRIMARY KEY (nroresumen, nrolinea);
 ALTER TABLE alerta ADD CONSTRAINT alerta_pk PRIMARY KEY (nroalerta);
-ALTER TABLE consumo ADD CONSTRAINT consumo_pk PRIMARY KEY (nrotarjeta, nrocomercio);
 
 -- FK’s
 
