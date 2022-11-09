@@ -216,7 +216,7 @@ INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) 
 -- Compra correcta
 INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('5827624652643290','8246', 3, 3500);
 -- Tarjeta inválida
-INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('6347467826428439','235', 7, 10000);
+INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('2930489589375756','235', 7, 10000);
 -- Tarjeta anulada
 INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('9320584378172604','906', 1, 7000);
 -- Tarjeta suspendida
