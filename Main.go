@@ -19,8 +19,8 @@ const dbInfo string = "user=postgres password=123 host=localhost dbname=tarjetas
 
 var db *sql.DB
 var err error
-var opcion int = 0;
-var Menu string;
+var opcion int = 0
+var Menu string
 
 func main() {
 
@@ -35,13 +35,12 @@ Menu :=
 	[6]. Crear y cargar funciones. 
 	[7]. Autorizar compra. 
 	[8]. Generar Resumenes. 
-	[9]. SALIR.
-		
-`
+	[9]. SALIR.`
+
 	fmt.Print(Menu)
-	fmt.Print("Ingrese el numero de opcion a realizar: ")
+	fmt.Print("Ingrese el número de opción a realizar: ")
 	fmt.Scanf("%d", &opcion)
-	fmt.Print("Operacion solicitada: ", opcion)
+	fmt.Print("Operación solicitada: ", opcion)
 	fmt.Print("\n")
 	
 	switch opcion{
