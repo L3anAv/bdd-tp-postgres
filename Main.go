@@ -139,6 +139,32 @@ func createPksAndFks() {
 	}
 }
 
+func dropPksAndFks() {
+	_, err = db.Exec(`ALTER TABLE cliente DROP CONSTRAINT cliente_pk;
+	ALTER TABLE tarjeta DROP CONSTRAINT tarjeta_pk;
+	ALTER TABLE comercio DROP CONSTRAINT comercio_pk;
+	ALTER TABLE compra DROP CONSTRAINT compra_pk;
+	ALTER TABLE rechazo DROP CONSTRAINT rechazo_pk;
+	ALTER TABLE cierre DROP CONSTRAINT cierre_pk;
+	ALTER TABLE cabecera DROP CONSTRAINT cabecera_pk;
+	ALTER TABLE detalle DROP CONSTRAINT detalle_pk;
+	ALTER TABLE alerta DROP CONSTRAINT alerta_pk;
+
+	ALTER TABLE tarjeta DROP CONSTRAINT tarjeta_nrocliente_fk;
+	ALTER TABLE compra DROP CONSTRAINT compra_nrotarjeta_fk;
+	ALTER TABLE compra DROP CONSTRAINT compra_nrocomercio_fk;
+	ALTER TABLE rechazo DROP CONSTRAINT rechazo_nrotarjeta_fk;
+	ALTER TABLE rechazo DROP CONSTRAINT rechazo_nrocomercio_fk;
+	ALTER TABLE cabecera DROP CONSTRAINT cabecera_nrotarjeta_fk;
+	ALTER TABLE alerta DROP CONSTRAINT alerta_nrotarjeta_fk;
+	ALTER TABLE alerta DROP CONSTRAINT alerta_nrorechazo_fk;
+	ALTER TABLE consumo DROP CONSTRAINT consumo_nrotarjeta_fk;
+	ALTER TABLE consumo DROP CONSTRAINT consumo_nrocomercio_fk;`)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 func insertValues() {
 	_, err = db.Exec(`INSERT INTO cliente (nombre, apellido, domicilio, telefono) VALUES ('Matias', 'Avila', '9 de Julio 2302', '541112321232');
 	INSERT INTO cliente (nombre, apellido, domicilio, telefono) VALUES ('Giannina', 'Perez', 'Panamericana Km 36.5', '541145678970');
@@ -347,6 +373,215 @@ func insertValues() {
 	INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('9012348282748326','520', 4, 9000);
 	INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('3784736427463790','2397', 9, 50000);
 	INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('3784736427463790','2397', 9, 80000);`)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func createFunctionAutorizaciones() {
+	_, err = db.Exec(`CREATE OR REPLACE FUNCTION autorizar_compra(n_tarjeta tarjeta.nrotarjeta%type,
+						cod_seg tarjeta.codseguridad%type, n_comercio compra.nrocomercio%type,
+							monto_compra compra.monto%type) RETURNS boolean as $$
+						DECLARE
+
+							tarjeta_fila record;
+							fecha_actual DATE;
+							fecha_vencimiento DATE;
+							comercio_encontrado INT;
+							fecha_de_vencimiento_text TEXT;
+							monto_total_compras_tarjeta_actual compra.monto%type;
+
+						BEGIN
+
+							SELECT CAST(validahasta AS TEXT) INTO fecha_de_vencimiento_text FROM tarjeta t WHERE n_tarjeta = t.nrotarjeta;
+
+							SELECT SUM(monto) INTO monto_total_compras_tarjeta_actual FROM compra c WHERE n_tarjeta = c.nrotarjeta and c.pagado = false;
+
+							fecha_actual := CURRENT_DATE;
+							fecha_vencimiento := TO_DATE(fecha_de_vencimiento_text, 'YYYYMM');
+
+							SELECT * INTO tarjeta_fila  FROM tarjeta t WHERE t.nrotarjeta = n_tarjeta ;
+
+							IF NOT found then
+								INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo) 
+									VALUES (n_tarjeta, n_comercio, current_timestamp, monto_compra, 'Tarjeta no valida o no vigente.');
+
+								return false;
+
+							ELSIF tarjeta_fila.codseguridad != cod_seg then
+								INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo)  
+									VALUES (n_tarjeta, n_comercio, current_timestamp, monto_compra, 'Codigo de seguridad invalido.');
+
+								return false;
+
+							ELSIF fecha_actual > fecha_vencimiento then
+								INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo)
+									VALUES (n_tarjeta, n_comercio, current_timestamp, monto_compra, 'Plazo de vigencia expirado.');
+
+								return false;
+
+							ELSIF tarjeta_fila.estado = 'suspendida' then
+								INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo)
+									VALUES (n_tarjeta, n_comercio, current_timestamp, monto_compra, 'La Tarjeta se encuentra suspendida.');
+
+								return false;
+
+
+							ELSIF tarjeta_fila.limitecompra < monto_total_compras_tarjeta_actual then
+								INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo)
+									VALUES (n_tarjeta, n_comercio, current_timestamp, monto_compra, 'Supera límite de tarjeta');
+
+								return false;
+
+							ELSE
+								INSERT INTO compra (nrotarjeta, nrocomercio, fecha, monto, pagado)
+									VALUES (n_tarjeta, n_comercio, current_timestamp, monto_compra, false);
+
+								return true;
+							END IF;
+						END;
+						$$ LANGUAGE plpgsql;`)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func createFunctionResumenes() {
+	_, err = db.Exec(`CREATE OR REPLACE FUNCTION generar_resumen (nro_cliente cliente.nrocliente%TYPE, aux_año INT, aux_mes INT) RETURNS void AS $$
+
+						DECLARE
+
+							aux_nrolinea INT := 1;
+							aux_cliente RECORD;
+							aux_compra RECORD;
+							aux_tarjeta RECORD;
+							aux_cierre RECORD;
+							aux_comercio RECORD;
+							aux_nroresumen cabecera.nroresumen%type;
+							aux_total cabecera.total%type;
+
+						BEGIN
+
+								SELECT * INTO aux_cliente FROM cliente WHERE nrocliente = nro_cliente;
+									IF NOT FOUND THEN
+										RAISE 'El número de cliente % no existe.', nro_cliente;
+								END IF;
+
+								FOR aux_tarjeta IN SELECT * FROM tarjeta WHERE nrocliente = aux_cliente.nrocliente LOOP
+						
+								aux_total := 0;
+
+								SELECT * INTO aux_cierre FROM cierre WHERE año = aux_año AND mes = aux_mes
+												AND terminacion = substring(aux_tarjeta.nrotarjeta, 16, 1)::INT;
+
+										INSERT INTO cabecera (nombre, apellido, domicilio, nrotarjeta, desde, hasta, vence, total)
+												VALUES (aux_cliente.nombre, aux_cliente.apellido, aux_cliente.domicilio, aux_tarjeta.nrotarjeta, aux_cierre.fechainicio, aux_cierre.fechacierre, aux_cierre.fechavto, aux_total);
+
+										INSERT INTO cabecera(nroresumen) SELECT nroresumen FROM cabecera WHERE nrotarjeta = aux_tarjeta.nrotarjeta
+												AND desde = aux_cierre.fechainicio AND hasta = aux_cierre.fechacierre;
+
+										FOR aux_compra IN SELECT * FROM compra WHERE nrotarjeta = aux_tarjeta.nrotarjeta AND fecha >= aux_cierre.fechainicio AND fecha <= aux_cierre.fechacierre AND pagado = false LOOP
+
+												SELECT * INTO aux_comercio FROM comercio WHERE nrocomercio = aux_compra.nrocomercio;
+
+												INSERT INTO detalle (nroresumen, nrolinea, fecha, nombrecomercio, monto)
+														VALUES (aux_nroresumen, aux_nrolinea, aux_compra.fecha, aux_comercio.nombre, aux_compra.monto);
+									aux_nrolinea := aux_nrolinea + 1; --incremento aux_nrolinea
+												aux_total := aux_total + aux_compra.monto; --incremento total
+												UPDATE compra SET pagado = true WHERE nrooperacion = aux_compra.nrooperacion;
+										END LOOP;
+
+										UPDATE cabecera SET total = aux_total WHERE nrotarjeta = aux_tarjeta.nrotarjeta
+												AND desde = aux_cierre.fechainicio AND hasta = aux_cierre.fechacierre;
+										
+								END LOOP;
+						END;
+						$$ LANGUAGE plpgsql;`)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func createFunctionAlertas() {
+	_, err = db.Exec(`CREATE OR REPLACE FUNCTION alerta_rechazo() RETURNS TRIGGER AS $$
+						BEGIN
+							
+							PERFORM * FROM rechazo r WHERE r.nrotarjeta = NEW.nrotarjeta
+															AND r.nrorechazo != NEW.nrorechazo
+															AND EXTRACT(DAY FROM r.fecha) = EXTRACT(DAY FROM new.fecha)
+															AND EXTRACT(MONTH FROM r.fecha) = EXTRACT(MONTH FROM new.fecha)
+															AND EXTRACT(YEAR FROM r.fecha) = EXTRACT(YEAR FROM new.fecha)
+															AND r.motivo = 'Supera límite de tarjeta'
+															AND new.motivo = 'Supera límite de tarjeta';
+							IF FOUND THEN
+								UPDATE tarjeta SET estado = 'suspendida' WHERE nrotarjeta = new.nrotarjeta;
+								INSERT INTO alerta (nrotarjeta, fecha, nrorechazo, codalerta, descripcion) VALUES (new.nrotarjeta, CURRENT_TIMESTAMP, new.nrorechazo, 32, 'Tarjeta suspendida por compras excedidas del límite');
+							END IF;
+							INSERT INTO alerta (nrotarjeta, fecha, nrorechazo, codalerta, descripcion) VALUES (NEW.nrotarjeta, CURRENT_TIMESTAMP, NEW.nrorechazo, 0, NEW.motivo);
+							RETURN NEW;
+						END;
+						$$ LANGUAGE plpgsql;
+						
+						CREATE OR REPLACE FUNCTION es_mismo_dia(fecha1 TIMESTAMP, fecha2 TIMESTAMP) RETURNS BOOLEAN AS $$
+						DECLARE
+							anio_fecha1 INT;
+							anio_fecha2 INT;
+							mes_fecha1 INT;
+							mes_fecha2 INT;
+							dia_fecha1 INT;
+							dia_fecha2 INT;
+						BEGIN
+							SELECT EXTRACT INTO anio_fecha1 (YEAR FROM fecha1);
+							SELECT EXTRACT INTO anio_fecha2 (YEAR FROM fecha2);
+							SELECT EXTRACT INTO mes_fecha1 (MONTH FROM fecha1);
+							SELECT EXTRACT INTO mes_fecha2 (MONTH FROM fecha2);
+							SELECT EXTRACT INTO dia_fecha1 (DAY FROM fecha1);
+							SELECT EXTRACT INTO dia_fecha2 (DAY FROM fecha2);
+							
+							IF anio_fecha1 = anio_fecha2 AND mes_fecha1 = mes_fecha2 AND dia_fecha1 = dia_fecha2 THEN
+								RETURN TRUE;
+							ELSE
+								RETURN  FALSE;
+							END IF;
+						END;
+						$$ LANGUAGE plpgsql;
+						
+						
+						CREATE OR REPLACE FUNCTION alerta_compras() RETURNS TRIGGER AS $$
+						DECLARE
+							ultima_compra record;
+							codigo_postal_ultima_compra comercio.codigopostal%TYPE;
+							codigo_postal_compra_actual comercio.codigopostal%TYPE;
+							diferencia_minutos INT;
+							mismo_dia BOOLEAN;
+							
+						BEGIN
+							SELECT INTO ultima_compra * FROM compra WHERE nrotarjeta = new.nrotarjeta ORDER BY fecha DESC LIMIT 1;
+							SELECT INTO codigo_postal_ultima_compra codigopostal FROM comercio WHERE nrocomercio = ultima_compra.nrocomercio;
+							SELECT INTO codigo_postal_compra_actual codigopostal FROM comercio WHERE nrocomercio = new.nrocomercio;
+							mismo_dia := es_mismo_dia(NEW.fecha, ultima_compra.fecha);
+							SELECT EXTRACT INTO diferencia_minutos (MINUTES FROM (NEW.fecha - ultima_compra.fecha));
+							
+							IF NEW.nrocomercio != ultima_compra.nrocomercio AND codigo_postal_compra_actual = codigo_postal_ultima_compra AND mismo_dia = true AND diferencia_minutos < 1 THEN
+								INSERT INTO alerta (nrotarjeta, fecha, codalerta, descripcion) VALUES (NEW.nrotarjeta, CURRENT_TIMESTAMP, 1, 'Se realizaron dos compras en el mismo minuto en tiendas distintas');
+							END IF;
+							
+							IF codigo_postal_compra_actual != codigo_postal_ultima_compra AND mismo_dia = true AND diferencia_minutos < 5 THEN
+								INSERT INTO alerta (nrotarjeta, fecha, codalerta, descripcion) VALUES (NEW.nrotarjeta, CURRENT_TIMESTAMP, 5, 'Se realizaron dos compras en 5 minutos en localidades distintas');
+							END IF;
+							RETURN NEW;
+						END;
+						$$ LANGUAGE plpgsql;
+						
+						CREATE OR REPLACE TRIGGER alerta_rechazo_trigger
+						AFTER INSERT ON rechazo
+						FOR EACH ROW
+						EXECUTE PROCEDURE alerta_rechazo();
+						
+						CREATE OR REPLACE TRIGGER alerta_compras_trigger
+						BEFORE INSERT ON compra
+						FOR EACH ROW
+						EXECUTE PROCEDURE alerta_compras();`)
 	if err != nil {
 		log.Fatal(err)
 	}
