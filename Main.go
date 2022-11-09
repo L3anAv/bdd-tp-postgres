@@ -36,48 +36,50 @@ Menu :=
 	[7]. Autorizar compra. 
 	[8]. Generar Resumenes. 
 	[9]. SALIR.`
-
-	fmt.Print(Menu)
-	fmt.Print("Ingrese el número de opción a realizar: ")
-	fmt.Scanf("%d", &opcion)
-	fmt.Print("Operación solicitada: ", opcion)
-	fmt.Print("\n")
-	
-	switch opcion{
-			case 1:
-				fmt.Print("Creando Base de datos... \n")
-				createDatabase()
-				fmt.Print("Base de datos creada! \n")
-			case 2:
-				fmt.Print("Creando Tablas. \n")
-				createTables()
-				fmt.Print("Tablas de base de datos creada! \n")
-			case 3:
-				fmt.Print("Creando PK's y FK's. \n")
-				createPksAndFks()
-				fmt.Print("PK's y FK's de tablas creadas! \n")
-			case 4:
-				fmt.Print("Borrando PK's y FK's. \n")
-				dropPksAndFks()
-				fmt.Print("PK's y FK's eliminadas! \n")
-			case 5:
-				fmt.Print("Insertando datos en tablas. \n")
-				insertValues()
-				fmt.Print("Datos insertados en las tablas! \n")
-			case 6:
-				fmt.Print("Crear y cargar funciones. \n")
-				createFunctionAutorizaciones()
-				createFunctionResumenes()
-				createFunctionAlertas()
-				fmt.Print("Funciones Creadas! \n")
-			case 7:
-				fmt.Print("Autorizar compra. \n")
-				// Funcion Autorizar compra.
-			case 8:
-				fmt.Print("Generar Resumenes. \n")
-				// Funcion para generar Resumenes.
-			case 9:
-				os.Exit(1)
+	for opcion != 9 {
+		
+		fmt.Print(Menu,"\n")
+		fmt.Print("Ingrese el número de opción a realizar: ")
+		fmt.Scanf("%d", &opcion)
+		fmt.Print("Operación solicitada: ", opcion)
+		fmt.Print("\n")
+		
+		switch opcion{
+		case 1:
+			fmt.Print("Creando Base de datos... \n")
+			createDatabase()
+			fmt.Print("Base de datos creada! \n")
+		case 2:
+			fmt.Print("Creando Tablas. \n")
+			createTables()
+			fmt.Print("Tablas de base de datos creada! \n")
+		case 3:
+			fmt.Print("Creando PK's y FK's. \n")
+			createPksAndFks()
+			fmt.Print("PK's y FK's de tablas creadas! \n")
+		case 4:
+			fmt.Print("Borrando PK's y FK's. \n")
+			dropPksAndFks()
+			fmt.Print("PK's y FK's eliminadas! \n")
+		case 5:
+			fmt.Print("Insertando datos en tablas. \n")
+			insertValues()
+			fmt.Print("Datos insertados en las tablas! \n")
+		case 6:
+			fmt.Print("Crear y cargar funciones. \n")
+			createFunctionAutorizaciones()
+			createFunctionResumenes()
+			createFunctionAlertas()
+			fmt.Print("Funciones Creadas! \n")
+		case 7:
+			fmt.Print("Autorizar compra. \n")
+			// Funcion Autorizar compra.
+		case 8:
+			fmt.Print("Generar Resumenes. \n")
+			// Funcion para generar Resumenes.
+		case 9:
+			os.Exit(1)
+		}
 	}
 }
 
@@ -97,6 +99,8 @@ func createDatabase() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	
+	db, err = sql.Open("postgres", "user=postgres password=123 host=localhost dbname=tarjetas sslmode=disable")
 }
 
 func createTables() {
