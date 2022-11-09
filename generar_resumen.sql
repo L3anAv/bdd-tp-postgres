@@ -14,9 +14,9 @@ CREATE OR REPLACE FUNCTION generar_resumen (nro_cliente cliente.nrocliente%TYPE,
 
         BEGIN
 
-                --guardo cliente en aux_cliente
+                --guardo cliente pasado por parametro en aux_cliente
                 SELECT * INTO aux_cliente FROM cliente WHERE nrocliente = nro_cliente;
-	                IF NOT FOUND THEN
+	                IF NOT FOUND THEN --compruebo que nro_cliente pasado por parametro sea valido
 	      		        RAISE 'El número de cliente % no existe.', nro_cliente;
   		        END IF;
 
@@ -25,15 +25,16 @@ CREATE OR REPLACE FUNCTION generar_resumen (nro_cliente cliente.nrocliente%TYPE,
         
 		        aux_total := 0; --reinicio total a pagar
 
+                        --guardo cierre de la tarjeta en aux_cierre, uso substring para saber su numero de terminacion y lo paso a int
 		        SELECT * INTO aux_cierre FROM cierre WHERE año = aux_año AND mes = aux_mes
-                                AND terminacion = substring(aux_tarjeta.nrotarjeta, 16, 1)::INT; --guardo cierre en aux_cierre
+                                AND terminacion = substring(aux_tarjeta.nrotarjeta, 16, 1)::INT;
 
-                        --creo cabecera
-                        --falta aux_nroresumen y total = 0
+                        --creo cabecera sin nroresumen ya que es serial y se crea automaticamente
+                        --total = 0
                         INSERT INTO cabecera (nombre, apellido, domicilio, nrotarjeta, desde, hasta, vence, total)
                                 VALUES (aux_cliente.nombre, aux_cliente.apellido, aux_cliente.domicilio, aux_tarjeta.nrotarjeta, aux_cierre.fechainicio, aux_cierre.fechacierre, aux_cierre.fechavto, aux_total);
 
-                        --guardo los nroresumen autogenerados en aux_nroresumen para usarlo en detalle
+                        --guardo nroresumen autogenerado en aux_nroresumen para usarlo en detalle
                         INSERT INTO cabecera(nroresumen) SELECT nroresumen FROM cabecera WHERE nrotarjeta = aux_tarjeta.nrotarjeta
                                 AND desde = aux_cierre.fechainicio AND hasta = aux_cierre.fechacierre;
 

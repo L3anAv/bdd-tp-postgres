@@ -149,9 +149,9 @@ func fillArrays() {
 	comercios = append(comercios, Comercio{1, "Ferreteria El Cosito", "Cervantes 565","C1425EID","541165849035"})
 	comercios = append(comercios, Comercio{2, "Carniceria La Vaca Feliz", "Gral. Guemes 897","C1425EID","541199999999"})
 	comercios = append(comercios, Comercio{3, "Bar El Obrero", "Donado 65","E6325EID","541174392057"})
-	compras = append(compras, Compra{1, "1294382965767449", "2364", "2022-09-11 15:33:44", 2500, false})
-	compras = append(compras, Compra{2, "9293437257327169", "937", "2022-06-20 18:05:24", 50250, false})
-	compras = append(compras, Compra{3, "5827624652643290", "8246", "2022-08-15 22:15:38", 7800, false})
+	compras = append(compras, Compra{1, "1294382965767449", 1, "2022-09-11", 2500, false})
+	compras = append(compras, Compra{2, "9293437257327169", 2, "2022-06-20", 50250, false})
+	compras = append(compras, Compra{3, "5827624652643290", 2, "2022-08-15", 7800, false})
 }
 
 func createDatabase() {
