@@ -59,7 +59,7 @@ Menu :=
 				fmt.Print("PK's y FK's de tablas creadas! \n")
 			case 4:
 				fmt.Print("Borrando PK's y FK's. \n")
-				// Funcion de borrar PK's y FK's.
+				dropPksAndFks()
 				fmt.Print("PK's y FK's eliminadas! \n")
 			case 5:
 				fmt.Print("Insertando datos en tablas. \n")
@@ -67,11 +67,13 @@ Menu :=
 				fmt.Print("Datos insertados en las tablas! \n")
 			case 6:
 				fmt.Print("Crear y cargar funciones. \n")
-				// Funcion para crear funciones.
+				createFunctionAutorizaciones()
+				createFunctionResumenes()
+				createFunctionAlertas()
 				fmt.Print("Funciones Creadas! \n")
 			case 7:
 				fmt.Print("Autorizar compra. \n")
-				// Funcion Autoriza compra.
+				// Funcion Autorizar compra.
 			case 8:
 				fmt.Print("Generar Resumenes. \n")
 				// Funcion para generar Resumenes.
