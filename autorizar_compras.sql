@@ -3,7 +3,7 @@ CREATE OR REPLACE FUNCTION autorizar_compra(n_tarjeta tarjeta.nrotarjeta%type,
                                                     n_comercio compra.nrocomercio%type,
                                                         monto_compra compra.monto%type) RETURNS boolean as $$
 DECLARE
-	tarjeta_fila record; -- Fila de tarjeta de nrodetarjeta pasada por parametro
+    tarjeta_fila record; -- Fila de tarjeta de nrodetarjeta pasada por parametro
     fecha_actual DATE;   -- Fecha del dia actual.
     fecha_vencimiento DATE; -- Fecha de tope de vencimiento de la tarjeta pasada por parametro.
     comercio_encontrado INT; -- numero de comercio pasado, que exista.
@@ -11,26 +11,25 @@ DECLARE
 	monto_total_compras_tarjeta_actual compra.monto%type; -- Monto total de compras actuales de la tarjeta pasada por parametro.
 BEGIN
 
-    -- Seleccion de fila completa de la tarjeta pasada por nrotarjeta.
+    -- Seleccion de fila completa de la tarjeta filtrado por nrotarjeta.
     SELECT * INTO tarjeta_fila FROM tarjeta t WHERE n_tarjeta = t.nrotarjeta;
     
-    -- Seleccion de fecha de vencimiento de la tarjeta pasada por nrotarjeta.
-    SELECT CAST(validadesde AS TEXT) INTO fecha_de_vencimiento_text FROM tarjeta t WHERE n_tarjeta = t.nrotarjeta;
-
-	--Asignacion a variables monto total de compras de tarjeta.
-	monto_total_compras_tarjeta_actual := (SELECT SUM(monto) FROM compra c WHERE n_tarjeta = c.nrotarjeta);
-	--SELECT SUM(monto) INTO monto_total_compras_tarjeta_actual FROM compra c WHERE n_tarjeta = c.nrotarjeta and c.pagado = false;
-   
-    -- Conversion y Asignacion de fechas como type DATE
-    fecha_actual := CURRENT_DATE;
-	fecha_vencimiento := TO_DATE(fecha_de_vencimiento_text, 'YYYYMM');
-	
     -- Control de la existencia de nrotarjeta pasada por parametro.
     IF NOT found then
         INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo) 
             VALUES (n_tarjeta, n_comercio, current_timestamp, monto_compra, 'Tarjeta no valida o no vigente.');
     
         return false;
+
+    -- Seleccion de fecha de vencimiento de la tarjeta pasada por nrotarjeta pasado por parametro.
+    SELECT CAST(validadesde AS TEXT) INTO fecha_de_vencimiento_text FROM tarjeta t WHERE n_tarjeta = t.nrotarjeta;
+
+	-- Asignacion a variable el valor de monto total de compras realizadas por la tarjeta pasada por parametro.
+	SELECT SUM(monto) INTO monto_total_compras_tarjeta_actual FROM compra c WHERE n_tarjeta = c.nrotarjeta and c.pagado = false;
+   
+    -- Conversion y Asignacion de fechas como type DATE
+    fecha_actual := CURRENT_DATE;
+	fecha_vencimiento := TO_DATE(fecha_de_vencimiento_text, 'YYYYMM');
 
     -- Control de codigo de seguridad correcto
     ELSIF tarjeta_fila.codseguridad != cod_seg then
@@ -60,7 +59,7 @@ BEGIN
     
         return false;
     
-    -- Si pasa todos los controles, se efectua la compra por autorizar y se inserta en la tabla correspondiente.
+    -- Si pasa todos los controles, se efectua la compra por autorizar y se inserta en la tabla correspondiente retornando.
     ELSE
         INSERT INTO compra (nrotarjeta, nrocomercio, fecha, monto, pagado)
             VALUES (n_tarjeta, n_comercio, current_timestamp, monto_compra, false);
@@ -69,4 +68,3 @@ BEGIN
     END IF;
 END;
 $$ LANGUAGE plpgsql;
-
