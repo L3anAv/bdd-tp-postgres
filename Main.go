@@ -128,13 +128,9 @@ func createPksAndFks() {
 	ALTER TABLE tarjeta ADD CONSTRAINT tarjeta_nrocliente_fk FOREIGN KEY (nrocliente) REFERENCES cliente (nrocliente);
 	ALTER TABLE compra ADD CONSTRAINT compra_nrotarjeta_fk FOREIGN KEY (nrotarjeta) REFERENCES tarjeta (nrotarjeta);
 	ALTER TABLE compra ADD CONSTRAINT compra_nrocomercio_fk FOREIGN KEY (nrocomercio) REFERENCES comercio (nrocomercio);
-	ALTER TABLE rechazo ADD CONSTRAINT rechazo_nrotarjeta_fk FOREIGN KEY (nrotarjeta) REFERENCES tarjeta (nrotarjeta);
 	ALTER TABLE rechazo ADD CONSTRAINT rechazo_nrocomercio_fk FOREIGN KEY (nrocomercio) REFERENCES comercio (nrocomercio);
 	ALTER TABLE cabecera ADD CONSTRAINT cabecera_nrotarjeta_fk FOREIGN KEY (nrotarjeta) REFERENCES tarjeta (nrotarjeta);
-	ALTER TABLE alerta ADD CONSTRAINT alerta_nrotarjeta_fk FOREIGN KEY (nrotarjeta) REFERENCES tarjeta (nrotarjeta);
-	ALTER TABLE alerta ADD CONSTRAINT alerta_nrorechazo_fk FOREIGN KEY (nrorechazo) REFERENCES rechazo (nrorechazo);
-	ALTER TABLE consumo ADD CONSTRAINT consumo_nrotarjeta_fk FOREIGN KEY (nrotarjeta) REFERENCES tarjeta (nrotarjeta);
-	ALTER TABLE consumo ADD CONSTRAINT consumo_nrocomercio_fk FOREIGN KEY (nrocomercio) REFERENCES comercio (nrocomercio);`)
+	ALTER TABLE alerta ADD CONSTRAINT alerta_nrorechazo_fk FOREIGN KEY (nrorechazo) REFERENCES rechazo (nrorechazo);`)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -154,13 +150,9 @@ func dropPksAndFks() {
 	ALTER TABLE tarjeta DROP CONSTRAINT tarjeta_nrocliente_fk;
 	ALTER TABLE compra DROP CONSTRAINT compra_nrotarjeta_fk;
 	ALTER TABLE compra DROP CONSTRAINT compra_nrocomercio_fk;
-	ALTER TABLE rechazo DROP CONSTRAINT rechazo_nrotarjeta_fk;
 	ALTER TABLE rechazo DROP CONSTRAINT rechazo_nrocomercio_fk;
 	ALTER TABLE cabecera DROP CONSTRAINT cabecera_nrotarjeta_fk;
-	ALTER TABLE alerta DROP CONSTRAINT alerta_nrotarjeta_fk;
-	ALTER TABLE alerta DROP CONSTRAINT alerta_nrorechazo_fk;
-	ALTER TABLE consumo DROP CONSTRAINT consumo_nrotarjeta_fk;
-	ALTER TABLE consumo DROP CONSTRAINT consumo_nrocomercio_fk;`)
+	ALTER TABLE alerta DROP CONSTRAINT alerta_nrorechazo_fk;`)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -363,7 +355,7 @@ func insertValues() {
 	INSERT INTO cierre (año, mes, terminacion, fechainicio, fechacierre, fechavto) VALUES (2022, 12, 9, '2022-12-01', '2022-12-31', '2023-01-19');
 	
 	INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('5827624652643290','8246', 3, 3500);
-	INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('6347467826428439','235', 7, 10000);
+	INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('2930489589375756','235', 7, 10000);
 	INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('9320584378172604','906', 1, 7000);
 	INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('1294382965767449','2364', 6, 3500);
 	INSERT INTO consumo (nrotarjeta, codseguridad, nrocomercio, monto) VALUES ('6347467826428439','546', 2, 960);
