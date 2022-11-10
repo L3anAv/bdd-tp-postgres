@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 )
 
 type Cliente struct {
@@ -21,7 +22,7 @@ type Tarjeta struct {
 	NroCliente   int
 	ValidaDesde  string
 	ValidaHasta  string
-	CodSeguridad int
+	CodSeguridad string
 	LimiteCompra float64
 	Estado       string
 }
@@ -30,7 +31,7 @@ type Comercio struct {
 	NroComercio  int
 	Nombre       string
 	Domicilio    string
-	CodigoPostal int
+	CodigoPostal string
 	Telefono     string
 }
 
@@ -47,7 +48,6 @@ var db *bolt.DB
 var err error
 var opcion int = 0
 var Menu string
-
 var clientes []Cliente
 var tarjetas []Tarjeta
 var comercios []Comercio
@@ -66,10 +66,12 @@ func main() {
 	[4]. Insertar datos de las tarjetas en DB.
 	[5]. Insertar datos de los comercios en DB.
 	[6]. Insertar datos de las compras en DB.
-	[7]. SALIR. `
+	[7]. SALIR.
+	
+`
 
-	for opcion != 9 {
-		
+	for opcion != 7 {
+
 		fmt.Print(Menu,"\n")
 		fmt.Print("Ingrese el número de opción a realizar: ")
 		fmt.Scanf("%d", &opcion)
@@ -82,9 +84,13 @@ func main() {
 		
 	switch opcion{
 		case 1:
-			fmt.Print("Creando Base de datos... \n")
-			crearbaseDeDatos()
-			fmt.Print("Base de datos creada! \n")
+			fmt.Print("Creando base... \n")
+			db, err := bolt.Open("tarjetas.db", 0600, nil)
+			if err != nil {
+				log.Fatal(err)
+			}
+			defer db.Close()
+			fmt.Print("Base de datos creada. \n")
 		case 2:
 			fmt.Print("Insertando info en arrays... \n")
 			rellenarArraysConDatos()
@@ -93,6 +99,7 @@ func main() {
 			fmt.Print("Insertando clientes... \n")
 			insertarClientes()
 			fmt.Print("Clientes insertados! \n")
+			insertarClientes()
 		case 4:
 
 		case 5:
@@ -104,14 +111,6 @@ func main() {
 		}
 	}
 
-}
-
-func crearbaseDeDatos() {
-	db, err = bolt.Open("tarjetas.db", 0600, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
 }
 
 func rellenarArraysConDatos() {
@@ -138,25 +137,21 @@ func rellenarArraysConDatos() {
 }
 
 func insertarClientes(){
-
-	for _, cliente := range Clientes{
+	
+	for _, cliente := range clientes{
 
 		//Conversion a json data de cliente
-		data, error := json.Marshall(cliente)
-		if error != nil { // Control de error
-			log.Fatal(error)
+		data, err := json.Marshal(cliente)
+		if err != nil { // Control de error
+			log.Fatal(err)
 		}
 		
 		//Insertar en DB cada cliente.
 		createUpdateBucket(db, "cliente", []byte(strconv.Itoa(cliente.NroCliente)), data) //Insertar en bucket creado o existente.
 		
 		//Leer el resultado insertado para mostrar.
-		resultado, error := leerFilaDeBucket(db, "cliente", []byte(strconv.Itoa(cliente.NroCliente))) //Extrayendolo del bucket con modo lectura
-		if error != nil{ // Control de error
-			log.Fatal(error)
-		}
-		
-		fmt.Print("\n%s\n", resultado)
+		resultado, err := leerFilaDeBucket(db, "cliente", []byte(strconv.Itoa(cliente.NroCliente))) //Extrayendolo del bucket con modo lectura
+		fmt.Printf("\n%s\n", resultado)
 	}
 
 	fmt.Print("Insercción de datos de clientes terminada. \n") // Mensaje final de operacion terminada.
@@ -175,7 +170,7 @@ func createUpdateBucket(db *bolt.DB, bucketName string, clave []byte, valor []by
 	defer tx.Rollback()
 
 	// Creo el bucket si no existe, y si existe lo llamo o cosumo
-	b, _ := tx.createBucketIfNotExists([]byte(bucketName))
+	b, _ := tx.CreateBucketIfNotExists([]byte(bucketName))
 
 	// Inserto el par clave valor pasado por parametro y lo ingreso en el bucket
 	err = b.Put(clave, valor)
@@ -184,7 +179,7 @@ func createUpdateBucket(db *bolt.DB, bucketName string, clave []byte, valor []by
 	}
 
 	//Cierra transaccion. Commit los cambios.
-	if err != tx.Commit(); err != nil {
+	if err := tx.Commit(); err != nil {
 		return err // Control de error en commit
 	}
 
@@ -196,11 +191,11 @@ func leerFilaDeBucket(db *bolt.DB, bucketName string, key []byte) ([]byte, error
 	var buffer []byte
 
 	//Abrimos una transaccion de lectura
-	error := db.View(func(tx *bolt.Tx) error { // obtenemos y en tal caso devolvemos el error
+	err := db.View(func(tx *bolt.Tx) error { // obtenemos y en tal caso devolvemos el error
 		b := tx.Bucket([]byte(bucketName)) // Buscamos el bucket
-		buffer := b.Get(key) // Obtenemos datos atravez del id
+		buffer = b.Get(key) // Obtenemos datos atravez del id
 		return nil
 	})
 
-	return buffer, error //Retornamos buffer
+	return buffer, err //Retornamos buffer
 }
