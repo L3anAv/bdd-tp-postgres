@@ -117,7 +117,7 @@ func main() {
 		case 7:
 			os.Exit(0)
 		}
-
+	}
 }
 
 func rellenarArraysConDatos() {
