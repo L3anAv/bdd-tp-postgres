@@ -136,6 +136,32 @@ func rellenarArraysConDatos() {
 	compras = append(compras, Compra{3, "5827624652643290", 2, "2022-08-15", 7800, false})
 }
 
+func insertarClientes(){
+
+	for _, cliente := range Clientes{
+
+		//Conversion a json data de cliente
+		data, error := json.Marshall(cliente)
+		if error != nil { // Control de error
+			log.Fatal(error)
+		}
+		
+		//Insertar en DB cada cliente.
+		createUpdateBucket(db, "cliente", []byte(strconv.Itoa(cliente.NroCliente)), data) //Insertar en bucket creado o existente.
+		
+		//Leer el resultado insertado para mostrar.
+		resultado, error := leerFilaDeBucket(db, "cliente", []byte(strconv.Itoa(cliente.NroCliente))) //Extrayendolo del bucket con modo lectura
+		if error != nil{ // Control de error
+			log.Fatal(error)
+		}
+		
+		fmt.Print("\n%s\n", resultado)
+	}
+
+	fmt.Print("Inserccion de datos de clientes terminada. \n") // Mensaje final de operacion terminada.
+
+}
+
 
 /* Funciones aux para insertar y mostrar datos insertados */
 
@@ -170,7 +196,7 @@ func leerFilaDeBucket(db *bolt.DB, bucketName string, key []byte) ([]byte, error
 	var buffer []byte
 
 	//Abrimos una transaccion de lectura
-	error := db.View(func(tx *bolt.Tx) error {
+	error := db.View(func(tx *bolt.Tx) error { // obtenemos y en tal caso devolvemos el error
 		b := tx.Bucket([]byte(bucketName)) // Buscamos el bucket
 		buffer := b.Get(key) // Obtenemos datos atravez del id
 		return nil
