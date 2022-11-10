@@ -82,34 +82,33 @@ func main() {
 			os.Exit(0) 
 		}
 		
-	switch opcion{
-		case 1:
-			fmt.Print("Creando base... \n")
-			db, err := bolt.Open("tarjetas.db", 0600, nil)
-			if err != nil {
-				log.Fatal(err)
+		switch opcion{
+			case 1:
+				fmt.Print("Creando base... \n")
+				db, err = bolt.Open("tarjetas.db", 0600, nil)
+				if err != nil {
+					log.Fatal(err)
+				}
+				defer db.Close()
+				fmt.Print("Base de datos creada. \n")
+			case 2:
+				fmt.Print("Insertando info en arrays... \n")
+				rellenarArraysConDatos()
+				fmt.Print("Datos ingresados en arrays! \n")
+			case 3:
+				fmt.Print("Insertando clientes... \n")
+				insertarClientes()
+				fmt.Print("Clientes insertados! \n")
+			case 4:
+
+			case 5:
+
+			case 6:
+
+			case 7:
+				os.Exit(0)
 			}
-			defer db.Close()
-			fmt.Print("Base de datos creada. \n")
-		case 2:
-			fmt.Print("Insertando info en arrays... \n")
-			rellenarArraysConDatos()
-			fmt.Print("Datos ingresados en arrays! \n")
-		case 3:
-			fmt.Print("Insertando clientes... \n")
-			insertarClientes()
-			fmt.Print("Clientes insertados! \n")
-			insertarClientes()
-		case 4:
-
-		case 5:
-
-		case 6:
-
-		case 7:
-			os.Exit(0)
 		}
-	}
 
 }
 
