@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	bolt "go.etcd.io/bbolt"
 	"fmt"
@@ -57,8 +58,10 @@ func main() {
 	
 
 	Menu := 
-`% Bienvenido % 
-  ~ Opciones de acciones para realizar:
+`
+
+% Bienvenido %
+~ Opciones de acciones para realizar:
 		
 	[1]. Crear base NoSQL de datos: [Tarjetas]. 
 	[2]. Rellenar arreglos de clientes, tarjetas, comercios, y compras. 
@@ -81,33 +84,38 @@ func main() {
 			fmt.Print("Ingrese una opción válida. \n")
 			os.Exit(0) 
 		}
-		
-		switch opcion{
-			case 1:
-				fmt.Print("Creando base... \n")
-				db, err = bolt.Open("tarjetas.db", 0600, nil)
-				if err != nil {
-					log.Fatal(err)
-				}
-				defer db.Close()
-				fmt.Print("Base de datos creada. \n")
-			case 2:
-				fmt.Print("Insertando info en arrays... \n")
-				rellenarArraysConDatos()
-				fmt.Print("Datos ingresados en arrays! \n")
-			case 3:
-				fmt.Print("Insertando clientes... \n")
-				insertarClientes()
-				fmt.Print("Clientes insertados! \n")
-			case 4:
 
-			case 5:
-
-			case 6:
-
-			case 7:
-				os.Exit(0)
+	switch opcion{
+		case 1:
+			fmt.Print("Creando base... \n")
+			db, err = bolt.Open("tarjetas.db", 0600, nil)
+			if err != nil {
+				log.Fatal(err)
 			}
+			defer db.Close()
+			fmt.Print("Base de datos creada. \n")
+		case 2:
+			fmt.Print("Insertando info en arrays... \n\n")
+			rellenarArraysConDatos()
+			fmt.Print("Datos ingresados en arrays! \n\n")
+		case 3:
+			fmt.Print("Insertando clientes... \n")
+			insertarDatosClientes()
+			fmt.Print("Clientes insertados! \n")
+		case 4:
+			fmt.Print("Insertando tarjetas..\n\n")
+			insertarDatosTarjetas()
+			fmt.Print("Tarjetas ingresadas! \n\n")
+		case 5:
+			fmt.Print("Insertando Comercios... \n")
+			insertarDatosComercios()
+			fmt.Print("Comercios ingresados! \n\n")
+		case 6:	
+			fmt.Print("Insertando compras... \n\n")
+			insertarDatosCompras()
+			fmt.Print("Compras ingresadas! \n\n")
+		case 7:
+			os.Exit(0)
 		}
 
 }
@@ -135,7 +143,7 @@ func rellenarArraysConDatos() {
 	compras = append(compras, Compra{3, "5827624652643290", 2, "2022-08-15", 7800, false})
 }
 
-func insertarClientes(){
+func insertarDatosClientes(){
 	
 	for _, cliente := range clientes{
 
@@ -150,11 +158,83 @@ func insertarClientes(){
 		
 		//Leer el resultado insertado para mostrar.
 		resultado, err := leerFilaDeBucket(db, "cliente", []byte(strconv.Itoa(cliente.NroCliente))) //Extrayendolo del bucket con modo lectura
-		fmt.Printf("\n%s\n", resultado)
+		
+		prettyJSON, err := formatJSON(resultado)
+		fmt.Println(string(prettyJSON))
 	}
 
 	fmt.Print("Insercción de datos de clientes terminada. \n") // Mensaje final de operacion terminada.
 
+}
+
+func insertarDatosTarjetas(){
+	
+	for _, tarjeta := range tarjetas{
+
+		//Conversion a json data de tarjeta
+		data, err := json.Marshal(tarjeta)
+		if err != nil { // Control de error
+			log.Fatal(err)
+		}
+		
+		//Insertar en DB cada tarjeta.
+		createUpdateBucket(db, "tarjeta", []byte(tarjeta.NroTarjeta), data) //Insertar en bucket creado o existente.
+		
+		//Leer el resultado insertado para mostrar.
+		resultado, err := leerFilaDeBucket(db, "tarjeta", []byte(tarjeta.NroTarjeta)) //Extrayendolo del bucket con modo lectura
+		
+		prettyJSON, err := formatJSON(resultado)
+		fmt.Println(string(prettyJSON))
+	}
+
+	fmt.Print("Insercción de datos de tarjetas terminada. \n") // Mensaje final de operacion terminada.
+}
+
+func insertarDatosComercios(){
+	
+	for _, comercio := range comercios{
+
+		//Conversion a json data de comercio
+		data, err := json.Marshal(comercio)
+		if err != nil { // Control de error
+			log.Fatal(err)
+		}
+		
+		//Insertar en DB cada comercio.
+		createUpdateBucket(db, "comercio", []byte(strconv.Itoa(comercio.NroComercio)), data) //Insertar en bucket creado o existente.
+		
+		//Leer el resultado insertado para mostrar.
+		resultado, err := leerFilaDeBucket(db, "comercio", []byte(strconv.Itoa(comercio.NroComercio))) //Extrayendolo del bucket con modo lectura
+		
+		prettyJSON, err := formatJSON(resultado)
+		fmt.Println(string(prettyJSON))
+	}
+
+	fmt.Print("Insercción de datos de comercios terminada. \n") // Mensaje final de operacion terminada.
+	
+}
+
+func insertarDatosCompras(){
+	
+	for _, compra := range compras{
+
+		//Conversion a json data de compra
+		data, err := json.Marshal(compra)
+		if err != nil { // Control de error
+			log.Fatal(err)
+		}
+		
+		//Insertar en DB cada compra.
+		createUpdateBucket(db, "comercio", []byte(strconv.Itoa(compra.NroComercio)), data) //Insertar en bucket creado o existente.
+		
+		//Leer el resultado insertado para mostrar.
+		resultado, err := leerFilaDeBucket(db, "comercio", []byte(strconv.Itoa(compra.NroComercio))) //Extrayendolo del bucket con modo lectura
+		
+		prettyJSON, err := formatJSON(resultado)
+		fmt.Println(string(prettyJSON))
+	}
+
+	fmt.Print("Insercción de datos de compras terminada. \n") // Mensaje final de operacion terminada.
 }
 
 /* Funciones aux para insertar y mostrar datos insertados */
@@ -165,8 +245,7 @@ func createUpdateBucket(db *bolt.DB, bucketName string, clave []byte, valor []by
 	if err != nil{ // Control de error de apertura de transaccion de escritura
 		return err
 	}
-	// Rollback en caso de salir antes (no realiza el update)
-	defer tx.Rollback()
+	defer tx.Rollback() // Rollback en caso de salir antes (no realiza el update)
 
 	// Creo el bucket si no existe, y si existe lo llamo o cosumo
 	b, _ := tx.CreateBucketIfNotExists([]byte(bucketName))
@@ -197,4 +276,17 @@ func leerFilaDeBucket(db *bolt.DB, bucketName string, key []byte) ([]byte, error
 	})
 
 	return buffer, err //Retornamos buffer
+}
+
+/* Funcion sacada de: https://www.yellowduck.be/posts/pretty-print-json-with-go/
+   solo para estilizar como se ve el json por consola */
+
+func formatJSON(data []byte) ([]byte, error) {
+    var out bytes.Buffer
+    
+    err := json.Indent(&out, data, "", "   ")
+    if err == nil {
+        return out.Bytes(), err
+    }
+    return data, nil
 }
