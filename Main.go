@@ -30,7 +30,8 @@ var cantidadAlertas int = 0
 func main() {
 
 Menu := 
-`% Bienvenido % Opciones de acciones para realizar:
+`% Bienvenido % 
+~ Opciones de acciones para realizar:
 		
 	[1]. Crear Base de datos de Tarjetas. 
 	[2]. Crear Tablas. 
