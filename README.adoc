@@ -18,7 +18,7 @@ Se deben incluir también los siguientes stored procedures y/o triggers:
 
 *Alertas a clientes:* Debe detectar y almacenar alertas para avisar a los clientes sobre posibles fraudes. Éstas consisten en comprobar que las tarjetas no superen dos compras dentro de un límite de tiempo, dependiendo del código postal en donde se realizaron dichas compras. Asimismo, suspender la tarjeta si ésta tiene dos rechazos por exceso de límite en el mismo día. También se generán alertas ante cada rechazo que se registre.
 
-Por último, en el trabajo se trabajará con una base de datos no relacional basada en JSON, donde también se ingresarán datos relacionados con las tarjetas.
+Por último, en el proyecto se trabajará con una base de datos no relacional basada en JSON, donde también se ingresarán datos relacionados con las tarjetas.
 
 Todas estas funcionalidades se podrán ejecutar en una aplicacion de Go.
 
@@ -34,13 +34,7 @@ Todas estas funcionalidades se podrán ejecutar en una aplicacion de Go.
 
 == Implementación
 
-Además, por cada fragmento de código
-relevante—i.e. función, método, procedimiento—se debe dar una
-breve descripción, decir qué hace, y especificar los parámetros que
-toma la función/método/procedimiento, junto con los valores que devuelve
-ó modifica.
-
-Al principio estabamos un poco desorientados sobre el enunciado y lo que debíamos hacer. Luego, entendimos que debíamos separar el trabajo en distintos archivos para poder organizarnos y contener mejor la información. Por esto, comenzamos con los archivos: *create_database.sql*, *pks_&_fks.sql*, *drop_pks_&_fks.sql* y finalmente *inserts.sql*. Estos nos ayudarían más tarde a testear de una forma eficaz las siguientes funciones ya mencionadas en la Introducción: autorizar_compra(), generar_resumen() y los triggers `alerta_rechazo()` y `alerta_compras()`*.
+Al principio estabamos un poco desorientados sobre el enunciado y lo que debíamos hacer. Luego, entendimos que debíamos separar el trabajo en distintos archivos para poder organizarnos y contener mejor la información. Por esto, comenzamos con los archivos: *create_database.sql*, *pks_&_fks.sql*, *drop_pks_&_fks.sql* y finalmente *inserts.sql*. Estos nos ayudarían más tarde a testear de una forma eficaz las siguientes funciones ya mencionadas en la Introducción: `autorizar_compra()`, `generar_resumen()` y los triggers `alerta_rechazo()` y `alerta_compras()`.
 
 *create_database.sql:* Consiste en borrar la base de datos tarjetas si esta ya existe. Si no existe, la crea junto a las tablas correspondientes.
 [source, sql]
@@ -364,4 +358,4 @@ EXECUTE PROCEDURE alerta_compras();
 
 Este trabajo fue un poco arduo ya que teníamos poco tiempo para realizarlo. Sin embargo, al ser tres integrantes en el grupo, fue suficiente para organizarnos y comenzar a trabajar de tal forma que todos entendieramos el avance de los demás.
 
-Como aprendizaje de este proyecto, lo que más destacamos es la búsqueda correcta de documentación, ya que nos facilita mucho el trabajo y nos será de ayuda más adelante. Como cierre, podemos decir que estamos satisfechos con nuestro producto terminado ya que realiza todas las funciones requeridas y el código quedó prolijo y limpio.
+Como aprendizaje de este proyecto, lo que más destacamos es la búsqueda correcta de documentación, ya que nos facilita mucho el trabajo y nos será de ayuda más adelante. Como cierre, podemos decir que estamos satisfechos con nuestro producto terminado ya que realiza todas las funciones requeridas y además, el código quedó prolijo y limpio.
