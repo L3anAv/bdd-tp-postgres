@@ -482,7 +482,7 @@ func createFunctionResumenes() {
 										INSERT INTO cabecera (nombre, apellido, domicilio, nrotarjeta, desde, hasta, vence, total)
 												VALUES (aux_cliente.nombre, aux_cliente.apellido, aux_cliente.domicilio, aux_tarjeta.nrotarjeta, aux_cierre.fechainicio, aux_cierre.fechacierre, aux_cierre.fechavto, aux_total);
 
-										INSERT INTO cabecera(nroresumen) SELECT nroresumen FROM cabecera WHERE nrotarjeta = aux_tarjeta.nrotarjeta
+										SELECT nroresumen INTO n_resumen FROM cabecera WHERE nrotarjeta = aux_tarjeta.nrotarjeta
 												AND desde = aux_cierre.fechainicio AND hasta = aux_cierre.fechacierre;
 
 										FOR aux_compra IN SELECT * FROM compra WHERE nrotarjeta = aux_tarjeta.nrotarjeta AND fecha >= aux_cierre.fechainicio AND fecha <= aux_cierre.fechacierre AND pagado = false LOOP
