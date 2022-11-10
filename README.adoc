@@ -54,7 +54,7 @@ Al principio estabamos un poco desorientados sobre el enunciado y lo que debíam
 	CREATE TABLE detalle (nroresumen INT, nrolinea INT, fecha DATE, nombrecomercio TEXT, monto DECIMAL(7,2));
 	CREATE TABLE alerta (nroalerta SERIAL, nrotarjeta CHAR(16), fecha TIMESTAMP, nrorechazo INT, codalerta 		INT, descripcion TEXT);
 	CREATE TABLE consumo (nrotarjeta CHAR(16), codseguridad CHAR(4), nrocomercio INT, monto DECIMAL(7,2));
- ----
+----
 
 *pks_&_fks.sql:* Crea y agrega las PK's y FK's a las tablas anteriormente creadas.
 [source, sql]
@@ -128,7 +128,7 @@ INSERT INTO cliente (nombre, apellido, domicilio, telefono) VALUES ('Paola', 'Tu
 INSERT INTO cliente (nombre, apellido, domicilio, telefono) VALUES ('Paulo', 'Gomez', 'Recta Martinoli 8357', '541187561264');
 ----
 
- *autorizar_compras.sql:* Crea la función autorizar_compra(), que toma como parámetros el número de tarjeta, el código de seguridad, el número de comercio y el monto de una compra. Devuelve true si se aprueba la compra o false si se rechaza.
+*autorizar_compras.sql:* Crea la función autorizar_compra(), que toma como parámetros el número de tarjeta, el código de seguridad, el número de comercio y el monto de una compra. Devuelve true si se aprueba la compra o false si se rechaza.
 [source, sql]
 ----
 CREATE OR REPLACE FUNCTION autorizar_compra(n_tarjeta tarjeta.nrotarjeta%type,
