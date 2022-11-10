@@ -9,6 +9,7 @@ import (
 )
 
 type consumo struct {
+	nroconsumo   int
 	nrotarjeta   string
 	codseguridad string
 	nrocomercio  int
@@ -21,6 +22,8 @@ var db *sql.DB
 var err error
 var opcion int = 0
 var Menu string
+var nroConsumo int = 1
+var TotalDeConsumos int = 0
 
 func main() {
 
@@ -35,7 +38,8 @@ Menu :=
 	[6]. Crear y cargar funciones. 
 	[7]. Autorizar compra. 
 	[8]. Generar Resumenes. 
-	[9]. SALIR.`
+	[9]. SALIR.
+`
 	for opcion != 9 {
 		
 		fmt.Print(Menu,"\n")
@@ -43,8 +47,12 @@ Menu :=
 		fmt.Scanf("%d", &opcion)
 		fmt.Print("Operación solicitada: ", opcion)
 		fmt.Print("\n")
+		if(opcion <= 0 || opcion >= 10){ 
+			fmt.Print("Ingrese una opcion valida. \n")
+			os.Exit(0) 
+		}
 		
-		switch opcion{
+	switch opcion{
 		case 1:
 			fmt.Print("Creando Base de datos... \n")
 			createDatabase()
@@ -73,12 +81,12 @@ Menu :=
 			fmt.Print("Funciones Creadas! \n")
 		case 7:
 			fmt.Print("Autorizar compra. \n")
-			// Funcion Autorizar compra.
+			autorizarCompras()
 		case 8:
 			fmt.Print("Generar Resumenes. \n")
 			// Funcion para generar Resumenes.
 		case 9:
-			os.Exit(1)
+			os.Exit(0)
 		}
 	}
 }
@@ -113,7 +121,7 @@ func createTables() {
 	CREATE TABLE cabecera (nroresumen SERIAL, nombre TEXT, apellido TEXT, domicilio TEXT, nrotarjeta CHAR(16), desde DATE, hasta DATE, vence DATE, total DECIMAL(8,2));
 	CREATE TABLE detalle (nroresumen INT, nrolinea INT, fecha DATE, nombrecomercio TEXT, monto DECIMAL(7,2));
 	CREATE TABLE alerta (nroalerta SERIAL, nrotarjeta CHAR(16), fecha TIMESTAMP, nrorechazo INT, codalerta INT, descripcion TEXT);
-	CREATE TABLE consumo (nrotarjeta CHAR(16), codseguridad CHAR(4), nrocomercio INT, monto DECIMAL(7,2));`)
+	CREATE TABLE consumo (nroconsumo SERIAL,nrotarjeta CHAR(16), codseguridad CHAR(4), nrocomercio INT, monto DECIMAL(7,2));`)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -582,4 +590,61 @@ func createFunctionAlertas() {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func autorizarCompras(){
+	
+	for TotalDeConsumos != 12 {
+	/* Busqueda de datos por nroConsumo */
+		row, err := db.Query(`SELECT * FROM consumo WHERE nroconsumo = $1`, nroConsumo)
+		
+	//Control de error de query anterior
+		if err != nil{ 
+			log.Fatal(err) 
+		} 
+		
+	defer row.Close() //Close de consumo de row al terminar.
+	var c consumo // var de type struc consumo.
+	var retorno bool // var para mostar si se autorizo o no una compra.
+	
+	// Asignacion de datos de query a struc c.
+		for row.Next(){
+			if err = row.Scan(&c.nroconsumo, &c.nrotarjeta, &c.codseguridad, &c.nrocomercio, &c.monto); 
+			//Control de error
+			err != nil{
+				log.Fatal(err)
+			}
+		}
+	
+	/* Consumo de funcion autorizar_compra() */
+		row, err = db.Query(`SELECT autorizar_compra($1::CHAR(16), $2::char(4), $3::INT, $4::DECIMAL(7,2));`, c.nrotarjeta, c.codseguridad, c.nrocomercio, c.monto)
+		//Control de error
+		if err != nil{ 
+			log.Fatal(err)
+		}
+		
+		// Obtencion de return de query
+		if row.Next() {
+			if err = row.Scan(&retorno); err != nil { //Control de error
+				log.Fatal(err)
+			}
+		}
+		//Control de error
+		if err != nil{ 
+			log.Fatal(err)
+		}
+		
+		if !retorno {
+			fmt.Print("\nCOMPRA RECHAZADA: ", nroConsumo, " (numero de consumo)")
+		} 
+		
+		//Aumento de nroConsumo mostrado
+		nroConsumo = nroConsumo + 1
+		
+		//Suma hasta llegar al tope total de consumos
+		TotalDeConsumos = TotalDeConsumos + 1
+	}
+	
+	fmt.Print("\n-- YA NO HAY COMPRAS PARA AUTORIZAR.\n")
+	
 }
