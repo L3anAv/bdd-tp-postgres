@@ -663,7 +663,7 @@ func informarAlertaNueva() {
 	for opcion != 9 {
 		var countAlertas int = 0
 		
-		row, err := db.Query(`select count(*) from alerta;`)
+		row, err := db.Query(`SELECT count(*) FROM alerta;`)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -684,18 +684,18 @@ func informarAlertaNueva() {
 }
 
 func generarResumenes() {
-	_, err = db.Query(`select generar_resumen(1, 2022, 2);
-				select generar_resumen(3, 2022, 4);
-				select generar_resumen(5, 2022, 6);
-				select generar_resumen(7, 2022, 8);
-				select generar_resumen(9, 2022, 10);
-				select generar_resumen(11, 2022, 12);
-				select generar_resumen(13, 2022, 1);
-				select generar_resumen(15, 2022, 3);
-				select generar_resumen(17, 2022, 5);
-				select generar_resumen(18, 2022, 7);
-				select generar_resumen(19, 2022, 9);
-				select generar_resumen(20, 2022, 11);`)
+	_, err = db.Query(`SELECT generar_resumen(1, 2022, 2);
+				SELECT generar_resumen(3, 2022, 4);
+				SELECT generar_resumen(5, 2022, 6);
+				SELECT generar_resumen(7, 2022, 8);
+				SELECT generar_resumen(9, 2022, 10);
+				SELECT generar_resumen(11, 2022, 12);
+				SELECT generar_resumen(13, 2022, 1);
+				SELECT generar_resumen(15, 2022, 3);
+				SELECT generar_resumen(17, 2022, 5);
+				SELECT generar_resumen(18, 2022, 7);
+				SELECT generar_resumen(19, 2022, 9);
+				SELECT generar_resumen(20, 2022, 11);`)
 	if err != nil {
 		log.Fatal(err)
 	}
