@@ -12,11 +12,15 @@ Este trabajo práctico consiste en crear una base de datos de tarjetas, en la cu
 
 Se deben incluir también los siguientes stored procedures y/o triggers:
 
-*Autorización de compra:* Valida o rechaza una compra, dependiendo si cumple o no los siguientes requisitos: La tarjeta debe ser válida y vigente, el número de tarjeta debe ser existente y el código de seguridad de ser correcto. Tamnién, el monto total de compras pendientes de pago más la compra a realizar no debe superar el límite de compra de la tarjeta.
+*Autorización de compra:* Valida o rechaza una compra, dependiendo si cumple o no los siguientes requisitos: La tarjeta debe ser válida y vigente, el número de tarjeta debe ser existente y el código de seguridad de ser correcto. También, el monto total de compras pendientes de pago más la compra a realizar no debe superar el límite de compra de la tarjeta.
 
 *Generación del resumen:* Crea y guarda todos los datos necesarios para un resumen.
 
-*Alertas a clientes:* Debe detectar y almacenar alertas para avisar a los clientes sobre posibles fraudes. Éstas consisten en comprobar que las tarjetas no superen dos compras dentro de un límite de tiempo, dependiendo del código postal en donde se realizaron dichas compras. Asimismo, suspender la tarjeta si ésta tiene dos rechazos por exceso de límite en el mismo día.
+*Alertas a clientes:* Debe detectar y almacenar alertas para avisar a los clientes sobre posibles fraudes. Éstas consisten en comprobar que las tarjetas no superen dos compras dentro de un límite de tiempo, dependiendo del código postal en donde se realizaron dichas compras. Asimismo, suspender la tarjeta si ésta tiene dos rechazos por exceso de límite en el mismo día. También se generán alertas ante cada rechazo que se registre.
+
+Por último, en el trabajo se trabajará con una base de datos no relacional basada en JSON, donde también se ingresarán datos relacionados con las tarjetas.
+
+Todas estas funcionalidades se podrán ejecutar en una aplicacion de Go.
 
 == Dificultades y decisiones
 
