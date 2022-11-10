@@ -39,10 +39,10 @@ Menu :=
 	[4]. Borrar PK's y FK's. 
 	[5]. Insertar datos en tablas. 
 	[6]. Crear y cargar funciones. 
-	[7]. Autorizar compra. 
+	[7]. Autorizar compras. 
 	[8]. Generar Resumenes. 
-	[9]. SALIR.
-`
+	[9]. SALIR.`
+	
 	for opcion != 9 {
 		
 		fmt.Print(Menu,"\n")
@@ -51,7 +51,7 @@ Menu :=
 		fmt.Print("Operación solicitada: ", opcion)
 		fmt.Print("\n")
 		if(opcion <= 0 || opcion >= 10){ 
-			fmt.Print("Ingrese una opcion valida. \n")
+			fmt.Print("Ingrese una opción válida. \n")
 			os.Exit(0) 
 		}
 		
@@ -61,34 +61,36 @@ Menu :=
 			createDatabase()
 			fmt.Print("Base de datos creada! \n")
 		case 2:
-			fmt.Print("Creando Tablas. \n")
+			fmt.Print("Creando Tablas... \n")
 			createTables()
-			fmt.Print("Tablas de base de datos creada! \n")
+			fmt.Print("Tablas de base de datos creadas! \n")
 		case 3:
-			fmt.Print("Creando PK's y FK's. \n")
+			fmt.Print("Creando PK's y FK's... \n")
 			createPksAndFks()
 			fmt.Print("PK's y FK's de tablas creadas! \n")
 		case 4:
-			fmt.Print("Borrando PK's y FK's. \n")
+			fmt.Print("Borrando PK's y FK's... \n")
 			dropPksAndFks()
 			fmt.Print("PK's y FK's eliminadas! \n")
 		case 5:
-			fmt.Print("Insertando datos en tablas. \n")
+			fmt.Print("Insertando datos en tablas... \n")
 			insertValues()
 			fmt.Print("Datos insertados en las tablas! \n")
 		case 6:
-			fmt.Print("Crear y cargar funciones. \n")
+			fmt.Print("Creando y cargando funciones... \n")
 			createFunctionAutorizaciones()
 			createFunctionResumenes()
 			createFunctionAlertas()
 			go informarAlertaNueva()
 			fmt.Print("Funciones Creadas! \n")
 		case 7:
-			fmt.Print("Autorizar compra. \n")
+			fmt.Print("Autorizando compras... \n")
 			autorizarCompras()
+			fmt.Print("Compras autorizadas! \n")
 		case 8:
-			fmt.Print("Generar Resumenes. \n")
-			// Funcion para generar Resumenes.
+			fmt.Print("Generando resumenes... \n")
+			generarResumenes()
+			fmt.Print("Resumenes generados! \n")
 		case 9:
 			os.Exit(0)
 		}
@@ -509,8 +511,7 @@ func createFunctionResumenes() {
 										
 								END LOOP;
 							END;
-					$$ LANGUAGE plpgsql;
-`)
+					$$ LANGUAGE plpgsql;`)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -625,7 +626,7 @@ func autorizarCompras(){
 			}
 		}
 	
-	/* Consumo de funcion autorizar_compra() */
+	    //Consumo de funcion autorizar_compra()
 		row, err = db.Query(`SELECT autorizar_compra($1::CHAR(16), $2::char(4), $3::INT, $4::DECIMAL(7,2));`, c.nrotarjeta, c.codseguridad, c.nrocomercio, c.monto)
 		//Control de error
 		if err != nil{ 
@@ -644,7 +645,7 @@ func autorizarCompras(){
 		}
 		
 		if !retorno {
-			fmt.Print("\nCOMPRA RECHAZADA: ", nroConsumo, " (numero de consumo)")
+			fmt.Print("\nCompra Rechazada: ", nroConsumo, " (numero de consumo)")
 		} 
 		
 		//Aumento de nroConsumo mostrado
@@ -654,7 +655,7 @@ func autorizarCompras(){
 		TotalDeConsumos = TotalDeConsumos + 1
 	}
 	
-	fmt.Print("\n-- YA NO HAY COMPRAS PARA AUTORIZAR.\n")
+	fmt.Print("\n-- No hay más compras para autorizar\n")
 	
 }
 
@@ -682,3 +683,20 @@ func informarAlertaNueva() {
 	}
 }
 
+func generarResumenes() {
+	_, err = db.Query(`select generar_resumen(1, 2022, 2);
+				select generar_resumen(3, 2022, 4);
+				select generar_resumen(5, 2022, 6);
+				select generar_resumen(7, 2022, 8);
+				select generar_resumen(9, 2022, 10);
+				select generar_resumen(11, 2022, 12);
+				select generar_resumen(13, 2022, 1);
+				select generar_resumen(15, 2022, 3);
+				select generar_resumen(17, 2022, 5);
+				select generar_resumen(18, 2022, 7);
+				select generar_resumen(19, 2022, 9);
+				select generar_resumen(20, 2022, 11);`)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
