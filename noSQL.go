@@ -66,9 +66,8 @@ func main() {
 	[4]. Insertar datos de las tarjetas en DB.
 	[5]. Insertar datos de los comercios en DB.
 	[6]. Insertar datos de las compras en DB.
-	[7]. SALIR. 
+	[7]. SALIR. `
 
-`
 	for opcion != 9 {
 		
 		fmt.Print(Menu,"\n")
@@ -77,21 +76,23 @@ func main() {
 		fmt.Print("Operación solicitada: ", opcion)
 		fmt.Print("\n")
 		if(opcion <= 0 || opcion >= 8){ 
-			fmt.Print("Ingrese una opcion valida. \n")
+			fmt.Print("Ingrese una opción válida. \n")
 			os.Exit(0) 
 		}
 		
 	switch opcion{
 		case 1:
-			fmt.Print("Creando base... \n")
+			fmt.Print("Creando Base de datos... \n")
 			crearbaseDeDatos()
-			fmt.Print("Base de datos creada. \n")
+			fmt.Print("Base de datos creada! \n")
 		case 2:
 			fmt.Print("Insertando info en arrays... \n")
 			rellenarArraysConDatos()
-			fmt.Print("Datos ingresandos en arrays. \n")
+			fmt.Print("Datos ingresados en arrays! \n")
 		case 3:
-
+			fmt.Print("Insertando clientes... \n")
+			insertarClientes()
+			fmt.Print("Clientes insertados! \n")
 		case 4:
 
 		case 5:
@@ -158,10 +159,9 @@ func insertarClientes(){
 		fmt.Print("\n%s\n", resultado)
 	}
 
-	fmt.Print("Inserccion de datos de clientes terminada. \n") // Mensaje final de operacion terminada.
+	fmt.Print("Insercción de datos de clientes terminada. \n") // Mensaje final de operacion terminada.
 
 }
-
 
 /* Funciones aux para insertar y mostrar datos insertados */
 
