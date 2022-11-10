@@ -456,56 +456,57 @@ func createFunctionAutorizaciones() {
 }
 
 func createFunctionResumenes() {
-	_, err = db.Exec(`CREATE OR REPLACE FUNCTION generar_resumen (nro_cliente cliente.nrocliente%TYPE, aux_año INT, aux_mes INT) RETURNS void AS $$
+	_, err = db.Exec(`CREATE OR REPLACE FUNCTION generar_resumen (n_cliente cliente.nrocliente%TYPE, aux_año INT, aux_mes INT) RETURNS void AS $$
 
 						DECLARE
 
-							aux_nrolinea INT := 1;
+							n_linea INT := 1;
 							aux_cliente RECORD;
 							aux_compra RECORD;
 							aux_tarjeta RECORD;
 							aux_cierre RECORD;
 							aux_comercio RECORD;
-							aux_nroresumen cabecera.nroresumen%type;
-							aux_total cabecera.total%type;
+							n_resumen cabecera.nroresumen%type;
+							monto_total cabecera.total%type;
 
 						BEGIN
 
-								SELECT * INTO aux_cliente FROM cliente WHERE nrocliente = nro_cliente;
-									IF NOT FOUND THEN
-										RAISE 'El número de cliente % no existe.', nro_cliente;
+							SELECT * INTO aux_cliente FROM cliente WHERE nrocliente = n_cliente;
+								IF NOT FOUND THEN
+									RAISE 'El número de cliente % no existe.', n_cliente;
 								END IF;
 
-								FOR aux_tarjeta IN SELECT * FROM tarjeta WHERE nrocliente = aux_cliente.nrocliente LOOP
+							FOR aux_tarjeta IN SELECT * FROM tarjeta WHERE nrocliente = aux_cliente.nrocliente LOOP
 						
-								aux_total := 0;
+								monto_total := 0;
 
 								SELECT * INTO aux_cierre FROM cierre WHERE año = aux_año AND mes = aux_mes
-												AND terminacion = substring(aux_tarjeta.nrotarjeta, 16, 1)::INT;
+									AND terminacion = substring(aux_tarjeta.nrotarjeta, 16, 1)::INT;
 
-										INSERT INTO cabecera (nombre, apellido, domicilio, nrotarjeta, desde, hasta, vence, total)
-												VALUES (aux_cliente.nombre, aux_cliente.apellido, aux_cliente.domicilio, aux_tarjeta.nrotarjeta, aux_cierre.fechainicio, aux_cierre.fechacierre, aux_cierre.fechavto, aux_total);
+								INSERT INTO cabecera (nombre, apellido, domicilio, nrotarjeta, desde, hasta, vence, total)
+									VALUES (aux_cliente.nombre, aux_cliente.apellido, aux_cliente.domicilio, aux_tarjeta.nrotarjeta, aux_cierre.fechainicio, aux_cierre.fechacierre, aux_cierre.fechavto, monto_total);
 
-										SELECT nroresumen INTO n_resumen FROM cabecera WHERE nrotarjeta = aux_tarjeta.nrotarjeta
-												AND desde = aux_cierre.fechainicio AND hasta = aux_cierre.fechacierre;
+								SELECT nroresumen INTO n_resumen FROM cabecera WHERE nrotarjeta = aux_tarjeta.nrotarjeta
+									AND desde = aux_cierre.fechainicio AND hasta = aux_cierre.fechacierre;
 
-										FOR aux_compra IN SELECT * FROM compra WHERE nrotarjeta = aux_tarjeta.nrotarjeta AND fecha >= aux_cierre.fechainicio AND fecha <= aux_cierre.fechacierre AND pagado = false LOOP
+								FOR aux_compra IN SELECT * FROM compra WHERE nrotarjeta = aux_tarjeta.nrotarjeta AND fecha >= aux_cierre.fechainicio AND fecha <= aux_cierre.fechacierre AND pagado = false LOOP
 
-												SELECT * INTO aux_comercio FROM comercio WHERE nrocomercio = aux_compra.nrocomercio;
+									SELECT * INTO aux_comercio FROM comercio WHERE nrocomercio = aux_compra.nrocomercio;
 
-												INSERT INTO detalle (nroresumen, nrolinea, fecha, nombrecomercio, monto)
-														VALUES (aux_nroresumen, aux_nrolinea, aux_compra.fecha, aux_comercio.nombre, aux_compra.monto);
-									aux_nrolinea := aux_nrolinea + 1; --incremento aux_nrolinea
-												aux_total := aux_total + aux_compra.monto; --incremento total
-												UPDATE compra SET pagado = true WHERE nrooperacion = aux_compra.nrooperacion;
-										END LOOP;
+									INSERT INTO detalle (nroresumen, nrolinea, fecha, nombrecomercio, monto)
+										VALUES (n_resumen, aux_nrolinea, aux_compra.fecha, aux_comercio.nombre, aux_compra.monto);
+									n_linea := n_linea + 1;
+									monto_total := monto_total + aux_compra.monto;
+									UPDATE compra SET pagado = true WHERE nrooperacion = aux_compra.nrooperacion;
+								END LOOP;
 
-										UPDATE cabecera SET total = aux_total WHERE nrotarjeta = aux_tarjeta.nrotarjeta
-												AND desde = aux_cierre.fechainicio AND hasta = aux_cierre.fechacierre;
+								UPDATE cabecera SET total = monto_total WHERE nrotarjeta = aux_tarjeta.nrotarjeta
+										AND desde = aux_cierre.fechainicio AND hasta = aux_cierre.fechacierre;
 										
 								END LOOP;
-						END;
-						$$ LANGUAGE plpgsql;`)
+							END;
+					$$ LANGUAGE plpgsql;
+`)
 	if err != nil {
 		log.Fatal(err)
 	}
