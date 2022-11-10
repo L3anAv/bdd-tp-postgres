@@ -52,7 +52,7 @@ INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguri
 INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('1294382965767449', 4, '201912', '202212', '2364', 10500, 'suspendida');
 INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('9293437257327169', 5, '202109', '202409', '937', 67000, 'anulada');
 INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('5827624652643290', 6, '202211', '202511', '8246', 8000, 'vigente');
-INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('3928217404085943', 7, '202212', '202512', '1485', 9000, 'vigente');
+INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('3928217404085943', 7, '202212', '202512', '1485', 90000, 'vigente');
 INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('1982747364536562', 8, '201301', '201601', '842', 70500, 'anulada');
 INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('9012348282748326', 9, '202010', '202310', '520', 21000, 'vigente');
 INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('8274236578326572', 10, '201911', '202211', '7856', 14000, 'suspendida');

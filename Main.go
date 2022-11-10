@@ -223,7 +223,7 @@ func insertValues() {
 	INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('1294382965767449', 4, '201912', '202212', '2364', 10500, 'suspendida');
 	INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('9293437257327169', 5, '202109', '202409', '937', 67000, 'anulada');
 	INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('5827624652643290', 6, '202211', '202511', '8246', 8000, 'vigente');
-	INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('3928217404085943', 7, '202212', '202512', '1485', 9000, 'vigente');
+	INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('3928217404085943', 7, '202212', '202512', '1485', 90000, 'vigente');
 	INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('1982747364536562', 8, '201301', '201601', '842', 70500, 'anulada');
 	INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('9012348282748326', 9, '202010', '202310', '520', 21000, 'vigente');
 	INSERT INTO tarjeta (nrotarjeta, nrocliente, validadesde, validahasta, codseguridad, limitecompra, estado) VALUES ('8274236578326572', 10, '201911', '202211', '7856', 14000, 'suspendida');
@@ -389,67 +389,70 @@ func insertValues() {
 
 func createFunctionAutorizaciones() {
 	_, err = db.Exec(`CREATE OR REPLACE FUNCTION autorizar_compra(n_tarjeta tarjeta.nrotarjeta%type,
-						cod_seg tarjeta.codseguridad%type, n_comercio compra.nrocomercio%type,
-							monto_compra compra.monto%type) RETURNS boolean as $$
-						DECLARE
+											cod_seg tarjeta.codseguridad%type,
+												n_comercio compra.nrocomercio%type,
+													monto_compra compra.monto%type) RETURNS boolean as $$
+					DECLARE
+						tarjeta_fila record;
+						fecha_actual DATE;
+						fecha_vencimiento DATE;
+						comercio_encontrado INT;
+						fecha_de_vencimiento_text TEXT;
+						monto_total_compras_tarjeta_actual compra.monto%type;
+					BEGIN
 
-							tarjeta_fila record;
-							fecha_actual DATE;
-							fecha_vencimiento DATE;
-							comercio_encontrado INT;
-							fecha_de_vencimiento_text TEXT;
-							monto_total_compras_tarjeta_actual compra.monto%type;
-
-						BEGIN
-
+						SELECT * INTO tarjeta_fila FROM tarjeta t WHERE n_tarjeta = t.nrotarjeta;
+						
+						IF NOT found then
+							INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo) 
+								VALUES (n_tarjeta, n_comercio, current_timestamp, monto_compra, 'Tarjeta no valida o no vigente.');
+						
+							return false;
+						ELSE
+							
 							SELECT CAST(validahasta AS TEXT) INTO fecha_de_vencimiento_text FROM tarjeta t WHERE n_tarjeta = t.nrotarjeta;
 
 							SELECT SUM(monto) INTO monto_total_compras_tarjeta_actual FROM compra c WHERE n_tarjeta = c.nrotarjeta and c.pagado = false;
+							IF monto_total_compras_tarjeta_actual IS NULL then
+								monto_total_compras_tarjeta_actual := 0;
+							END IF;
 
 							fecha_actual := CURRENT_DATE;
 							fecha_vencimiento := TO_DATE(fecha_de_vencimiento_text, 'YYYYMM');
 
-							SELECT * INTO tarjeta_fila  FROM tarjeta t WHERE t.nrotarjeta = n_tarjeta ;
-
-							IF NOT found then
-								INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo) 
-									VALUES (n_tarjeta, n_comercio, current_timestamp, monto_compra, 'Tarjeta no valida o no vigente.');
-
-								return false;
-
-							ELSIF tarjeta_fila.codseguridad != cod_seg then
+							IF tarjeta_fila.codseguridad != cod_seg then
 								INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo)  
 									VALUES (n_tarjeta, n_comercio, current_timestamp, monto_compra, 'Codigo de seguridad invalido.');
+								
+								return false;
+							
+							ELSIF monto_compra + monto_total_compras_tarjeta_actual  >= tarjeta_fila.limitecompra then
+								INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo)
+									VALUES (n_tarjeta, n_comercio, current_timestamp, monto_compra, 'Supera límite de tarjeta');
 
 								return false;
-
-							ELSIF fecha_actual > fecha_vencimiento then
+							
+							ELSIF  fecha_actual > fecha_vencimiento then
 								INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo)
 									VALUES (n_tarjeta, n_comercio, current_timestamp, monto_compra, 'Plazo de vigencia expirado.');
-
+							
 								return false;
 
 							ELSIF tarjeta_fila.estado = 'suspendida' then
 								INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo)
 									VALUES (n_tarjeta, n_comercio, current_timestamp, monto_compra, 'La Tarjeta se encuentra suspendida.');
-
+							
 								return false;
-
-
-							ELSIF tarjeta_fila.limitecompra < monto_total_compras_tarjeta_actual then
-								INSERT INTO rechazo (nrotarjeta, nrocomercio, fecha, monto, motivo)
-									VALUES (n_tarjeta, n_comercio, current_timestamp, monto_compra, 'Supera límite de tarjeta');
-
-								return false;
-
+							
 							ELSE
 								INSERT INTO compra (nrotarjeta, nrocomercio, fecha, monto, pagado)
 									VALUES (n_tarjeta, n_comercio, current_timestamp, monto_compra, false);
 
 								return true;
 							END IF;
-						END;
-						$$ LANGUAGE plpgsql;`)
+						END IF;
+					END;
+					$$ LANGUAGE plpgsql;`)
 	if err != nil {
 		log.Fatal(err)
 	}
