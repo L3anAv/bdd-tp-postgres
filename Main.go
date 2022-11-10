@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"log"
+	"time"
 )
 
 type consumo struct {
@@ -24,6 +25,7 @@ var opcion int = 0
 var Menu string
 var nroConsumo int = 1
 var TotalDeConsumos int = 0
+var cantidadAlertas int = 0
 
 func main() {
 
@@ -78,6 +80,7 @@ Menu :=
 			createFunctionAutorizaciones()
 			createFunctionResumenes()
 			createFunctionAlertas()
+			go informarAlertaNueva()
 			fmt.Print("Funciones Creadas! \n")
 		case 7:
 			fmt.Print("Autorizar compra. \n")
@@ -149,7 +152,14 @@ func createPksAndFks() {
 }
 
 func dropPksAndFks() {
-	_, err = db.Exec(`ALTER TABLE cliente DROP CONSTRAINT cliente_pk;
+	_, err = db.Exec(`
+	ALTER TABLE tarjeta DROP CONSTRAINT tarjeta_nrocliente_fk;
+	ALTER TABLE compra DROP CONSTRAINT compra_nrotarjeta_fk;
+	ALTER TABLE compra DROP CONSTRAINT compra_nrocomercio_fk;
+	ALTER TABLE rechazo DROP CONSTRAINT rechazo_nrocomercio_fk;
+	ALTER TABLE cabecera DROP CONSTRAINT cabecera_nrotarjeta_fk;
+	ALTER TABLE alerta DROP CONSTRAINT alerta_nrorechazo_fk;
+	ALTER TABLE cliente DROP CONSTRAINT cliente_pk;
 	ALTER TABLE tarjeta DROP CONSTRAINT tarjeta_pk;
 	ALTER TABLE comercio DROP CONSTRAINT comercio_pk;
 	ALTER TABLE compra DROP CONSTRAINT compra_pk;
@@ -158,13 +168,7 @@ func dropPksAndFks() {
 	ALTER TABLE cabecera DROP CONSTRAINT cabecera_pk;
 	ALTER TABLE detalle DROP CONSTRAINT detalle_pk;
 	ALTER TABLE alerta DROP CONSTRAINT alerta_pk;
-
-	ALTER TABLE tarjeta DROP CONSTRAINT tarjeta_nrocliente_fk;
-	ALTER TABLE compra DROP CONSTRAINT compra_nrotarjeta_fk;
-	ALTER TABLE compra DROP CONSTRAINT compra_nrocomercio_fk;
-	ALTER TABLE rechazo DROP CONSTRAINT rechazo_nrocomercio_fk;
-	ALTER TABLE cabecera DROP CONSTRAINT cabecera_nrotarjeta_fk;
-	ALTER TABLE alerta DROP CONSTRAINT alerta_nrorechazo_fk;`)
+	`)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -648,3 +652,28 @@ func autorizarCompras(){
 	fmt.Print("\n-- YA NO HAY COMPRAS PARA AUTORIZAR.\n")
 	
 }
+
+func informarAlertaNueva() {
+	for opcion != 9 {
+		var countAlertas int = 0
+		
+		row, err := db.Query(`select count(*) from alerta;`)
+		if err != nil {
+			log.Fatal(err)
+		}
+		if row.Next() {
+			if err = row.Scan(&countAlertas); err != nil {
+				log.Fatal(err)
+			}
+		}
+		if err != nil {
+			log.Fatal(err)
+		}
+		if cantidadAlertas < countAlertas {
+			cantidadAlertas = countAlertas
+			fmt.Print("\n Nueva alerta detectada \n")
+		}
+		time.Sleep(60 * time.Second)
+	}
+}
+
