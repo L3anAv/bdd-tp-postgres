@@ -39,26 +39,26 @@ toma la función/método/procedimiento, junto con los valores que devuelve
 Al principio estabamos un poco desorientados sobre el enunciado y lo que debíamos hacer. Luego, entendimos que debíamos separar el trabajo en distintos archivos para poder organizarnos y contener mejor la información. Por esto, comenzamos con los archivos: *create_database.sql*, *pks_&_fks.sql*, *drop_pks_&_fks.sql* y finalmente *inserts.sql*. Estos nos ayudarían más tarde a testear de una forma eficaz las siguientes funciones ya mencionadas en la Introducción: autorizar_compra(), generar_resumen() y los triggers *alerta_rechazo()*, *es_mismo_dia* y *alerta_compras()*.
 
 *create_database.sql:* Consiste en borrar la base de datos tarjetas si esta ya existe. Si no existe, la crea junto a las tablas correspondientes.
- [source, sql]
- ----
-DROP DATABASE IF EXISTS tarjetas;
-CREATE DATABASE tarjetas;
-\c tarjetas
-CREATE TABLE cliente (nrocliente SERIAL, nombre TEXT, apellido TEXT, domicilio TEXT, telefono CHAR(12));
-CREATE TABLE tarjeta (nrotarjeta CHAR(16), nrocliente INT, validadesde CHAR(6), validahasta CHAR(6), codseguridad CHAR(4), limitecompra DECIMAL(8,2), estado CHAR(10));
-CREATE TABLE comercio (nrocomercio SERIAL, nombre TEXT, domicilio TEXT, codigopostal CHAR(8), telefono CHAR(12));
-CREATE TABLE compra (nrooperacion SERIAL, nrotarjeta CHAR(16), nrocomercio INT, fecha TIMESTAMP, monto DECIMAL(7,2), pagado BOOLEAN);
-CREATE TABLE rechazo (nrorechazo SERIAL, nrotarjeta CHAR(16), nrocomercio INT, fecha TIMESTAMP, monto DECIMAL(7,2), motivo TEXT);
-CREATE TABLE cierre (año INT, mes INT, terminacion INT, fechainicio DATE, fechacierre DATE, fechavto DATE);
-CREATE TABLE cabecera (nroresumen SERIAL, nombre TEXT, apellido TEXT, domicilio TEXT, nrotarjeta CHAR(16), desde DATE, hasta DATE, vence DATE, total DECIMAL(8,2));
-CREATE TABLE detalle (nroresumen INT, nrolinea INT, fecha DATE, nombrecomercio TEXT, monto DECIMAL(7,2));
-CREATE TABLE alerta (nroalerta SERIAL, nrotarjeta CHAR(16), fecha TIMESTAMP, nrorechazo INT, codalerta INT, descripcion TEXT);
-CREATE TABLE consumo (nrotarjeta CHAR(16), codseguridad CHAR(4), nrocomercio INT, monto DECIMAL(7,2));
+[source, sql]
+----
+	DROP DATABASE IF EXISTS tarjetas;
+	CREATE DATABASE tarjetas;
+	\c tarjetas
+	CREATE TABLE cliente (nrocliente SERIAL, nombre TEXT, apellido TEXT, domicilio TEXT, telefono CHAR(12));
+	CREATE TABLE tarjeta (nrotarjeta CHAR(16), nrocliente INT, validadesde CHAR(6), validahasta CHAR(6), 		codseguridad CHAR(4), limitecompra DECIMAL(8,2), estado CHAR(10));
+	CREATE TABLE comercio (nrocomercio SERIAL, nombre TEXT, domicilio TEXT, codigopostal CHAR(8), telefono 		CHAR(12));
+	CREATE TABLE compra (nrooperacion SERIAL, nrotarjeta CHAR(16), nrocomercio INT, fecha TIMESTAMP, monto 		DECIMAL(7,2), pagado BOOLEAN);
+	CREATE TABLE rechazo (nrorechazo SERIAL, nrotarjeta CHAR(16), nrocomercio INT, fecha TIMESTAMP, monto 		DECIMAL(7,2), motivo TEXT);
+	CREATE TABLE cierre (año INT, mes INT, terminacion INT, fechainicio DATE, fechacierre DATE, fechavto DATE)	;
+	CREATE TABLE cabecera (nroresumen SERIAL, nombre TEXT, apellido TEXT, domicilio TEXT, nrotarjeta CHAR(16)	, desde DATE, hasta DATE, vence DATE, total DECIMAL(8,2));
+	CREATE TABLE detalle (nroresumen INT, nrolinea INT, fecha DATE, nombrecomercio TEXT, monto DECIMAL(7,2));
+	CREATE TABLE alerta (nroalerta SERIAL, nrotarjeta CHAR(16), fecha TIMESTAMP, nrorechazo INT, codalerta 		INT, descripcion TEXT);
+	CREATE TABLE consumo (nrotarjeta CHAR(16), codseguridad CHAR(4), nrocomercio INT, monto DECIMAL(7,2));
  ----
 
 *pks_&_fks.sql:* Crea y agrega las PK's y FK's a las tablas anteriormente creadas.
- [source, sql]
- ----
+[source, sql]
+----
 -- PK’s
 ALTER TABLE cliente ADD CONSTRAINT cliente_pk PRIMARY KEY (nrocliente);
 ALTER TABLE tarjeta ADD CONSTRAINT tarjeta_pk PRIMARY KEY (nrotarjeta);
@@ -77,11 +77,11 @@ ALTER TABLE compra ADD CONSTRAINT compra_nrocomercio_fk FOREIGN KEY (nrocomercio
 ALTER TABLE rechazo ADD CONSTRAINT rechazo_nrocomercio_fk FOREIGN KEY (nrocomercio) REFERENCES comercio (nrocomercio);
 ALTER TABLE cabecera ADD CONSTRAINT cabecera_nrotarjeta_fk FOREIGN KEY (nrotarjeta) REFERENCES tarjeta (nrotarjeta);
 ALTER TABLE alerta ADD CONSTRAINT alerta_nrorechazo_fk FOREIGN KEY (nrorechazo) REFERENCES rechazo (nrorechazo);
- ----
+----
 
 *drops_pks_&_fks.sql:* Elimina las PK's y FK's anteriormente creadas.
- [source, sql]
- ----
+[source, sql]
+----
 -- FK’s Drops
 ALTER TABLE tarjeta DROP CONSTRAINT tarjeta_nrocliente_fk;
 ALTER TABLE compra DROP CONSTRAINT compra_nrotarjeta_fk;
@@ -100,11 +100,11 @@ ALTER TABLE cierre DROP CONSTRAINT cierre_pk;
 ALTER TABLE cabecera DROP CONSTRAINT cabecera_pk;
 ALTER TABLE detalle DROP CONSTRAINT detalle_pk;
 ALTER TABLE alerta DROP CONSTRAINT alerta_pk;
- ----
+----
 
 *inserts.sql:* Inserta todos los valores requeridos a sus respectivas tablas (clientes, comercios, tarjetas, cierres y consumos).
- [source, sql]
- ----
+[source, sql]
+----
 -- Clientes
 INSERT INTO cliente (nombre, apellido, domicilio, telefono) VALUES ('Matias', 'Avila', '9 de Julio 2302', '541112321232');
 INSERT INTO cliente (nombre, apellido, domicilio, telefono) VALUES ('Giannina', 'Perez', 'Panamericana Km 36.5', '541145678970');
@@ -126,11 +126,11 @@ INSERT INTO cliente (nombre, apellido, domicilio, telefono) VALUES ('Belen', 'Ar
 INSERT INTO cliente (nombre, apellido, domicilio, telefono) VALUES ('Morena', 'Dominguez', 'Av. Sáenz Peña 318', '541121340968');
 INSERT INTO cliente (nombre, apellido, domicilio, telefono) VALUES ('Paola', 'Tugas', 'Enrique Bodereau 7571', '541197656291');
 INSERT INTO cliente (nombre, apellido, domicilio, telefono) VALUES ('Paulo', 'Gomez', 'Recta Martinoli 8357', '541187561264');
- ----
+----
 
  *autorizar_compras.sql:* Crea la función autorizar_compra(), que toma como parámetros el número de tarjeta, el código de seguridad, el número de comercio y el monto de una compra. Devuelve true si se aprueba la compra o false si se rechaza.
- [source, sql]
- ----
+[source, sql]
+----
 CREATE OR REPLACE FUNCTION autorizar_compra(n_tarjeta tarjeta.nrotarjeta%type,
                                                 cod_seg tarjeta.codseguridad%type,
                                                     n_comercio compra.nrocomercio%type,
@@ -205,12 +205,12 @@ BEGIN
     END IF;
 END;
 $$ LANGUAGE plpgsql;
- ----
+----
 
 *generar_resumen.sql:* Crea la función generar_resumen(), que toma como parámetros un número de cliente, un año y un mes. No devuelve nada, sino que inserta datos en cabecera y en detalle.
- [source, sql]
- ----
- CREATE OR REPLACE FUNCTION generar_resumen (n_cliente cliente.nrocliente%TYPE, aux_año INT, aux_mes INT) RETURNS void AS $$
+[source, sql]
+----
+ CREATE OR REPLACE FUNCTION generar_resumen (n_cliente cliente.nrocliente%TYPE, aux_año INT, aux_mes INT) 		RETURNS void AS $$
 
         DECLARE
 
@@ -237,45 +237,45 @@ $$ LANGUAGE plpgsql;
         
 		        monto_total := 0; --reinicio total a pagar
 
-                        --guardo cierre de la tarjeta en aux_cierre, uso substring para saber su numero de terminacion y lo paso a int
+                        --guardo cierre de la tarjeta en aux_cierre, uso substring para saber su numero de 		terminacion y lo paso a int
 		        SELECT * INTO aux_cierre FROM cierre WHERE año = aux_año AND mes = aux_mes
                                 AND terminacion = substring(aux_tarjeta.nrotarjeta, 16, 1)::INT;
 
                         --creo cabecera sin nroresumen ya que es serial y se crea automaticamente
                         --total = 0
-                        INSERT INTO cabecera (nombre, apellido, domicilio, nrotarjeta, desde, hasta, vence, total)
-                                VALUES (aux_cliente.nombre, aux_cliente.apellido, aux_cliente.domicilio, aux_tarjeta.nrotarjeta, aux_cierre.fechainicio, aux_cierre.fechacierre, aux_cierre.fechavto, monto_total);
+                        INSERT INTO cabecera (nombre, apellido, domicilio, nrotarjeta, desde, hasta, vence, 	total)
+                                VALUES (aux_cliente.nombre, aux_cliente.apellido, aux_cliente.domicilio, 		aux_tarjeta.nrotarjeta, aux_cierre.fechainicio, aux_cierre.fechacierre, aux_cierre.fechavto, monto_total);
 
                         --guardo nroresumen autogenerado en n_resumen para usarlo en detalle
-                        SELECT nroresumen INTO n_resumen FROM cabecera WHERE nrotarjeta = aux_tarjeta.nrotarjeta
+                        SELECT nroresumen INTO n_resumen FROM cabecera WHERE nrotarjeta = aux_tarjeta.			nrotarjeta
                                 AND desde = aux_cierre.fechainicio AND hasta = aux_cierre.fechacierre;
 
                         --recorro compras
-                        FOR aux_compra IN SELECT * FROM compra WHERE nrotarjeta = aux_tarjeta.nrotarjeta AND fecha >= aux_cierre.fechainicio AND fecha <= aux_cierre.fechacierre AND pagado = false LOOP
+                        FOR aux_compra IN SELECT * FROM compra WHERE nrotarjeta = aux_tarjeta.nrotarjeta AND 	fecha >= aux_cierre.fechainicio AND fecha <= aux_cierre.fechacierre AND pagado = false LOOP
 
                                 --guardo comercio en aux_comercio
-                                SELECT * INTO aux_comercio FROM comercio WHERE nrocomercio = aux_compra.nrocomercio;
+                                SELECT * INTO aux_comercio FROM comercio WHERE nrocomercio = aux_compra.		nrocomercio;
 
                                 --creo detalle
                                 INSERT INTO detalle (nroresumen, nrolinea, fecha, nombrecomercio, monto)
-                                        VALUES (n_resumen, aux_nrolinea, aux_compra.fecha, aux_comercio.nombre, aux_compra.monto);
+                                        VALUES (n_resumen, aux_nrolinea, aux_compra.fecha, aux_comercio.		nombre, aux_compra.monto);
 			        n_linea := n_linea + 1; --incremento n_linea
                                 monto_total := monto_total + aux_compra.monto; --incremento total
-                                UPDATE compra SET pagado = true WHERE nrooperacion = aux_compra.nrooperacion; --actualizo bool pagado
+                                UPDATE compra SET pagado = true WHERE nrooperacion = aux_compra.nrooperacion; 		--actualizo bool pagado
                         END LOOP;
 
-                        UPDATE cabecera SET total = monto_total WHERE nrotarjeta = aux_tarjeta.nrotarjeta --actualizo total en cabecera
+                        UPDATE cabecera SET total = monto_total WHERE nrotarjeta = aux_tarjeta.nrotarjeta 		--actualizo total en cabecera
                                 AND desde = aux_cierre.fechainicio AND hasta = aux_cierre.fechacierre;
                         
                 END LOOP;
         END;
 $$ LANGUAGE plpgsql;
- ----
+----
 
 *alerta_rechazo.sql:* Crea las funciones y triggers alerta_rechazo(), es_mismo_dia(), que toma como parámetros dos fechas, y alerta_compras().
- [source, sql]
- ----
- ----
+[source, sql]
+----
+----
 
 == Conclusiones
 
